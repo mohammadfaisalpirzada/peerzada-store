@@ -1,7 +1,7 @@
 import { defineConfig } from 'sanity';
 import { deskTool } from 'sanity/desk';
 import { visionTool } from '@sanity/vision'; // Import the Vision tool
-import { productShema } from '@/sanity/schemaTypes/product';
+import { productSchema } from '@/sanity/schemaTypes/product';
 
 export default defineConfig({
   name: 'default',
@@ -13,6 +13,6 @@ export default defineConfig({
   plugins: [deskTool(), visionTool()], // Add Vision tool to plugins
 
   schema: {
-    types: [productShema], // Add your schemas here
+    types: [productSchema], // Add your schemas here
   },
 });

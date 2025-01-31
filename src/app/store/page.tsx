@@ -11,7 +11,7 @@ import Link from "next/link";
 import Wallets from "@/components/Wallets";
 
 export default function StorePage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession(); // `status` is used to check authentication state
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +25,7 @@ export default function StorePage() {
     } else if (status === "authenticated") {
       setLoading(false); // Stop loading when session is verified
     }
-  }, [status, router]);
+  }, [status, router]); // `status` is a valid dependency here
 
   // Display loading state while checking session
   if (loading || status === "loading") {

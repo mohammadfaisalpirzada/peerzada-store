@@ -35,24 +35,28 @@ const WalletBanner: React.FC = () => {
     loadWallets();
   }, []);
 
+  // Navigate to the next image
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % wallets.length);
   };
 
+  // Navigate to the previous image
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? wallets.length - 1 : prevIndex - 1
     );
   };
 
+  // Display loading state while fetching data
   if (wallets.length === 0) {
-    return <p>Loading banners...</p>;
+    return <p className="text-center text-gray-500 mt-8">Loading banners...</p>;
   }
 
   return (
     <div className="relative flex flex-col items-center z-0 mt-4">
       {/* Image Carousel */}
-      <div className="relative w-full h-72 sm:h-96 md:h-[500px] overflow-hidden">
+      <div className="relative w-full h-72 sm:h-96 md:h-[500px] overflow-hidden rounded-lg shadow-lg">
+        {/* Display the Current Wallet Image */}
         <Image
           src={urlFor(wallets[currentIndex].image).url()} // Generate image URL dynamically
           alt={wallets[currentIndex].name || "Wallet Image"}
@@ -60,33 +64,34 @@ const WalletBanner: React.FC = () => {
           className="object-cover"
           priority={true}
         />
+
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
-          <h2 className="text-3xl sm:text-4xl font-bold">
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white px-4">
+          <h2 className="text-2xl sm:text-4xl font-bold text-center">
             {wallets[currentIndex].name}
           </h2>
-          <p className="text-lg sm:text-xl mt-2">
+          <p className="text-md sm:text-lg mt-2 text-center">
             Discount: {wallets[currentIndex].discountPercentage || 0}%
           </p>
-          <button className="mt-4 px-6 py-2 bg-red-500 rounded-lg hover:bg-red-600 transition-colors">
+          <button className="mt-4 px-6 py-2 bg-red-500 rounded-lg hover:bg-red-600 transition-colors shadow-md">
             Shop Now
           </button>
         </div>
-      </div>
 
-      {/* Controls */}
-      <div className="flex space-x-4 mt-4">
+        {/* Left Navigation Button */}
         <button
           onClick={handlePrev}
-          className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors"
+          className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-gray-200 bg-opacity-60 hover:bg-red-500 hover:text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shadow-lg transition-all duration-300 z-10"
         >
-          Prev
+          ‹
         </button>
+
+        {/* Right Navigation Button */}
         <button
           onClick={handleNext}
-          className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition-colors"
+          className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-gray-200 bg-opacity-60 hover:bg-red-500 hover:text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center shadow-lg transition-all duration-300 z-10"
         >
-          Next
+          ›
         </button>
       </div>
     </div>
