@@ -97,6 +97,17 @@ const NavBar = () => {
               Sanity Products
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
             </a>
+            <a
+              href="/apiProducts"
+              className="text-white text-sm font-medium hover:text-red-200 transition-colors duration-200 relative group"
+            >
+              Api Products
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
+            </a>
+
+
+
+
           </div>
 
           {/* Right: Search, Icons, User Profile, Hamburger */}

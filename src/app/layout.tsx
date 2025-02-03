@@ -1,8 +1,7 @@
-"use client";
-
-import { SessionProvider } from "next-auth/react";
-import NavBar from "@/components/NavBar";
+// app/layout.tsx
 import "./globals.css";
+import NavBar from "@/components/NavBar";
+import { Providers } from "../app/providers"
 
 export default function RootLayout({
   children,
@@ -11,11 +10,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <SessionProvider>
+      <body suppressHydrationWarning>
+        <Providers>
           <NavBar />
           {children}
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );

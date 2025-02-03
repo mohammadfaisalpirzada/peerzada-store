@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",                    // Set the target to ESNext or higher
     "module": "ESNext",                    // Use ESNext module resolution
-    "moduleResolution": "Node",           // Node-style module resolution
+    "moduleResolution": "Node",            // Node-style module resolution
     "strict": true,                        // Enable strict type-checking
     "esModuleInterop": true,               // Enable interop between CommonJS and ES modules
     "skipLibCheck": true,                  // Skip type checking for libraries
@@ -14,6 +14,7 @@
     "isolatedModules": true,               // Ensure all files can be transpiled independently
     "jsx": "preserve",                     // Keep JSX as-is
     "incremental": true,                   // Enable incremental compilation
+    "types": ["next", "next-auth"],        // Include types for Next.js and NextAuth.js
     "paths": {                             // Define path aliases
       "@/*": ["./src/*"]
     },
@@ -23,6 +24,15 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "importProducts.mjs"],
+  "include": [
+    "next-env.d.ts", 
+    "**/*.ts", 
+    "**/*.tsx", 
+    ".next/types/**/*.ts", 
+    "importProducts.mjs", 
+    "./pages/**/*.ts", 
+    "./app/**/*.ts", 
+    "./src/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }
