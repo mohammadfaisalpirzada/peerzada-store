@@ -12,7 +12,7 @@ export default function Contact() {
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-red-700">Get in Touch</h1>
           <p className="mt-2 text-lg">
-            Questions, custom orders, or just want to say Salaam? We're here.
+            Questions, custom orders, or just want to say Salaam? We&apos;re here.
           </p>
         </div>
 
@@ -77,8 +77,7 @@ export default function Contact() {
             width="100%"
             height="350"
             frameBorder="0"
-            className="rounded shadow"
-            style={{ border: 0 }}
+            className="rounded shadow contact-map"
             src="https://maps.google.com/maps?q=24.8617308,67.0320881&z=15&output=embed"
             allowFullScreen
           ></iframe>

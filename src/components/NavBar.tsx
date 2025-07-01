@@ -25,15 +25,6 @@ const NavBar = () => {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-  const getInitials = (name: string | null | undefined) => {
-    if (!name) return "";
-    return name
-      .split(" ")
-      .map((word) => word[0])
-      .join("")
-      .toUpperCase();
-  };
-
   return (
     <nav className="bg-gradient-to-r from-red-600 to-red-700 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

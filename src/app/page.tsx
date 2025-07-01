@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 /**
  * HomePage Component
@@ -38,9 +39,11 @@ const HomePage = () => {
   // If the user is NOT logged in, show the landing page
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <img
+      <Image
         src="/images/logo.svg"
         alt="Peerzada Store Logo"
+        width={128}
+        height={128}
         className="w-32 h-32 mb-6 drop-shadow-lg"
       />
       <h1 className="text-3xl md:text-5xl font-bold text-red-700 mb-4 text-center">
