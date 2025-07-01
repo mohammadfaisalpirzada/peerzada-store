@@ -48,4 +48,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-// No code changes needed; will rename the file to LoginForm.tsx for consistency.
