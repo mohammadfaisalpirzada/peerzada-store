@@ -4,13 +4,13 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import LoginForm from "@/components/login/LoginForm";
+import Link from "next/link";
 
 /**
  * HomePage Component
  * ------------------
  * - If the user is **authenticated**, they are redirected to `/store`.
- * - If **not authenticated**, the login form is shown.
+ * - If **not authenticated**, a welcoming landing page with a Login button is shown.
  * - While authentication is being checked, a **loading state** is displayed.
  */
 const HomePage = () => {
@@ -35,8 +35,34 @@ const HomePage = () => {
     );
   }
 
-  // If the user is NOT logged in, show the login form
-  return <LoginForm />;
+  // If the user is NOT logged in, show the landing page
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+      <img
+        src="/images/logo.svg"
+        alt="Peerzada Store Logo"
+        className="w-32 h-32 mb-6 drop-shadow-lg"
+      />
+      <h1 className="text-3xl md:text-5xl font-bold text-red-700 mb-4 text-center">
+        Welcome to Peerzada Store
+      </h1>
+      <p className="text-gray-600 text-lg md:text-xl mb-8 text-center max-w-xl">
+        Discover the best wallets and accessories. Shop with confidence and style!
+      </p>
+      <Link
+        href="/store"
+        className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-colors duration-200 text-lg"
+      >
+        Explore Store
+      </Link>
+      <Link
+        href="/auth/signin"
+        className="mt-4 text-red-600 hover:underline text-base"
+      >
+        Login
+      </Link>
+    </div>
+  );
 };
 
 export default HomePage; // Export the component as the default page
