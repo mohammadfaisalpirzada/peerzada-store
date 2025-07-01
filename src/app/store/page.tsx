@@ -1,4 +1,3 @@
-
 // scr/app/store/page.tsx
 
 "use client";
@@ -9,7 +8,6 @@ import { useSession } from "next-auth/react";
 import HorizontalLine from "@/components/HorizontalLine";
 import SideMenu from "@/components/SideMenu";
 import ImageCarousel from "@/components/ImageCarousel";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Link from "next/link";
 import Wallets from "@/components/Wallets";
 

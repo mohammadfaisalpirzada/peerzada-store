@@ -27,18 +27,13 @@ interface WalletsProps {
 }
 
 const Wallets: React.FC<WalletsProps> = ({ wallets: initialWallets = [], showArrows = true }) => {
-  const [wallets, setWallets] = useState<Wallet[]>(initialWallets || []);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [wallets, setWallets] = useState<Wallet[]>(initialWallets);
 
   useEffect(() => {
-    const loadWallets = async () => {
-      if (!initialWallets?.length) {
-        const data = await fetchWallets();
-        setWallets(data);
-      }
-    };
-
-    loadWallets();
+    if (initialWallets.length === 0) {
+      fetchWallets().then(setWallets);
+    }
   }, [initialWallets]);
 
   const rotateLeft = () => {

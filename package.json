@@ -11,23 +11,21 @@
     "import-data": "node scripts/importSanityData.mjs"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
     "@sanity/client": "^6.25.0",
     "@sanity/image-url": "^1.1.0",
+    "@sanity/ui": "^2.16.2",
     "@sanity/validation": "^3.14.4",
-    "@sanity/vision": "^3.71.1",
-    "@tailwindcss/line-clamp": "^0.4.4",
+    "@sanity/vision": "^3.95.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "lucide-react": "^0.473.0",
     "next": "^15.1.6",
     "next-auth": "^4.24.11",
-    "next-sanity": "^9.8.39",
+    "next-sanity": "^9.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sanity": "^3.71.0",
-    "styled-components": "^6.1.14",
-    "ts-node": "^10.9.2"
+    "styled-components": "^6.1.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

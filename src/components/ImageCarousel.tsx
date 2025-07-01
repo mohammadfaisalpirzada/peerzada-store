@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image"; // Import Image from next/image
 
 const images = [
-  { src: "/banner1.jpg", title: "Leather Wallets", discount: "Premium Quality Leather - 30% Off" },
-  { src: "/banner2.jpg", title: "Trendy Wallets", discount: "Stylish and Compact - Up to 25% Off" },
+  { src: "/images/banner1.jpg", title: "Leather Wallets", discount: "Premium Quality Leather - 30% Off" },
+  { src: "/images/banner2.jpg", title: "Trendy Wallets", discount: "Stylish and Compact - Up to 25% Off" },
   { src: "/banner3.jpg", title: "Classic Wallets", discount: "Timeless Elegance - Flat 20% Off" },
 ];
 
@@ -35,6 +35,7 @@ const ImageCarousel = () => {
         />
         {/* Overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold mb-2">Peerzada Store</h1>
           <h2 className="text-3xl sm:text-4xl font-bold">{images[currentIndex].title}</h2>
           <p className="text-lg sm:text-xl mt-2">{images[currentIndex].discount}</p>
           <button className="mt-4 px-6 py-2 bg-red-500 rounded-lg hover:bg-red-600 transition-colors">

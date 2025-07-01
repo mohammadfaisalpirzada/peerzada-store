@@ -10,7 +10,7 @@ interface InputProps {
   className?: string;
 }
 
-export const Input = ({
+export const Input: React.FC<InputProps> = ({
   id,
   type = "text",
   placeholder,

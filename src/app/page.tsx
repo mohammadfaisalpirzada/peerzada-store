@@ -4,8 +4,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import LoginForm from "@/components/login/loginform";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import LoginForm from "@/components/login/LoginForm";
 
 /**
  * HomePage Component
