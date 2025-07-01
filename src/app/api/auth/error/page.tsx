@@ -1,10 +1,19 @@
 // app/auth/error/page.tsx
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
-export default function AuthError() {
+export default function AuthErrorPageWrapper() {
+  return (
+    <Suspense>
+      <AuthError />
+    </Suspense>
+  );
+}
+
+function AuthError() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
