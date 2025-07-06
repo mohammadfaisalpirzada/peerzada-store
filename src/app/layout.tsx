@@ -16,8 +16,11 @@ export const metadata: Metadata = {
   title: "Peerzada Store | Best Wallets & Accessories",
   description: "Discover the best wallets and accessories. Shop with confidence and style at Peerzada Store.",
   icons: {
-    icon: "/favicon.ico",
-  },
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.45db1c09.ico", sizes: "any" }
+    ]
+  }
 };
 
 export default function RootLayout({
