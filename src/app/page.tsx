@@ -22,14 +22,30 @@ export default function Home() {
         >
           Discover the best wallets and accessories. Shop with confidence and style!
         </p>
-        <Link href="/wallets">
+         <Link href="/explore">
           <button 
-            className="w-full sm:w-auto px-12 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl py-3 text-lg transition-colors"
+            className="w-full sm:w-auto px-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl py-3 text-lg transition-colors"
             style={{ fontFamily: 'Nunito Sans, sans-serif' }}
           >
             Explore the Store
           </button>
         </Link>
+        <Link href="/wallets">
+          <button 
+            className="w-full sm:w-auto px-12 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl py-3 text-lg transition-colors"
+            style={{ fontFamily: 'Nunito Sans, sans-serif' }}
+          >
+            Our Wallets
+          </button>
+        </Link>
+        <Link href="/more">
+          <button 
+            className="w-full sm:w-auto px-12 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl py-3 text-lg transition-colors"
+            style={{ fontFamily: 'Nunito Sans, sans-serif' }}
+          >
+            Explore Blogs
+          </button>
+        </Link>          
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ export async function getWallets() {
   const query = `*[_type == "wallet"]{
     _id,
     title,
+    slug { current },
     description,
     price,
     image,
