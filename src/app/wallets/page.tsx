@@ -28,26 +28,6 @@ type Product = {
 export default async function WalletsPage() {
   const products: Product[] = await getWallets();
 
-  // Define WhatsApp related constants and functions INSIDE the component
-  // or before it if you prefer, but NOT as a duplicate export default function
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923458340669";
-
-  function generateWhatsAppMessage(product: Product) {
-    const productLink = `https://peerzada.store/wallets/${product._id}`;
-    // Construct the message, including the product image URL if available
-    let message = `I am interested in buying the product: ${product.title} priced at PKR ${product.price}.\nProduct link: ${productLink}`;
-
-    if (product.image) {
-      // It's generally not good practice to send an image URL directly in WhatsApp text message
-      // as it won't render as an image. Users will just see a link.
-      // However, if you specifically want to include it, here's how:
-      const imageUrl = urlFor(product.image); // Get the URL for the product image
-      message += `\nProduct image: ${imageUrl}`;
-    }
-
-    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  }
-
   console.log('Products:', products);
 
   return (

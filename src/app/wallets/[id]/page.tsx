@@ -4,18 +4,18 @@ import { client } from '../../../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 
 const builder = imageUrlBuilder(client);
-function urlFor(source) {
+function urlFor(source: Record<string, unknown>) {
   return builder.image(source);
 }
 
-async function getWalletBySlug(slug) {
+async function getWalletBySlug(slug: string) {
   const query = `*[_type == "wallet" && slug.current == $slug][0]`;
   return client.fetch(query, { slug });
 }
 
-export default async function WalletDetailPage({ params }) {
-  const { id: slug } = params;
-  const wallet = await getWalletBySlug(slug);
+export default async function WalletDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const wallet = await getWalletBySlug(id);
 
   if (!wallet) {
     return <div>Wallet not found</div>;

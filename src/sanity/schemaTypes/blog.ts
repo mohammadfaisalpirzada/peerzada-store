@@ -10,6 +10,19 @@ const blogSchema: SchemaTypeDefinition = {
     { name: 'publishedAt', title: 'Published At', type: 'datetime' },
     { name: 'mainImage', title: 'Main Image', type: 'image', options: { hotspot: true } },
     { name: 'body', title: 'Body', type: 'blockContent' },
+    {
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'English', value: 'en' },
+          { title: 'Urdu', value: 'ur' }
+        ],
+        layout: 'radio'
+      },
+      validation: Rule => Rule.required()
+    },
   ],
   orderings: [
     {
