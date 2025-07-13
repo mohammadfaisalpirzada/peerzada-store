@@ -12,5 +12,9 @@ export async function getWallets() {
     color,
     inStock
   }`;
-  return await client.fetch(query);
+  
+  // Add revalidation for fresh data
+  return await client.fetch(query, {}, {
+    next: { revalidate: 0 } // Always fetch fresh data
+  });
 }
