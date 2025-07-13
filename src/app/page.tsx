@@ -51,13 +51,13 @@ export default function Home() {
             </button>
           </Link>
 
-          <Link href="/more" className="w-full">
+          <Link href="/blogs" className="w-full">
             <button 
               className="w-full group relative overflow-hidden bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-2xl py-4 px-6 text-lg transition-all duration-300 shadow-lg hover:shadow-xl border-0 focus:outline-none focus:ring-4 focus:ring-green-300 transform hover:scale-105 active:scale-95"
             >
               <div className="flex items-center justify-center gap-3">
                 <span>📝</span>
-                <span>Explore Blogs</span>
+                <span>Master Sahub's Blogs</span>
               </div>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </button>

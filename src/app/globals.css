@@ -25,13 +25,26 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Enhanced Urdu Typography with Proper Fonts */
 .urdu-text {
-  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-family: 
+    'Jameel Noori Nastaleeq',
+    'Jameel Noori Kasheeda',
+    'Noto Nastaliq Urdu',
+    'Alvi Nastaleeq',
+    'Pak Nastaleeq',
+    'Urdu Typesetting',
+    'Arabic Typesetting',
+    'Traditional Arabic',
+    serif;
+  line-height: 2.5;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Apply right-to-left direction only if text contains Urdu characters */
 .urdu-text:lang(ur) {
   direction: rtl;
   unicode-bidi: bidi-override;
@@ -43,8 +56,16 @@ body {
   text-align: left;
 }
 
-/* Custom animations */
-@keyframes fadeIn {
+/* Line Clamping for Blog Cards */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Animations */
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -56,10 +77,10 @@ body {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fade-in 0.8s ease-out;
 }
 
-/* Logo transparency */
+/* Logo Cleanup */
 img[alt*="Logo"], 
 img[alt*="logo"] {
   background: transparent !important;
@@ -67,7 +88,7 @@ img[alt*="logo"] {
   outline: none !important;
 }
 
-/* Button hover effects */
+/* Button Styling */
 button {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

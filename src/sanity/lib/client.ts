@@ -6,5 +6,5 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Changed to false for real-time updates
+  useCdn: process.env.NODE_ENV === 'production', // CDN only in production
 })
