@@ -9,7 +9,7 @@ const builder = imageUrlBuilder(client);
 
 // Type-safe alternative to 'any'
 function urlFor(source: Record<string, unknown>) {
-  return builder.image(source).width(200).url(); // Removed .height(200) as you had width only below
+  return builder.image(source).width(200).height(200).url(); // Added height for consistent sizing
 }
 
 // Define product type
@@ -44,13 +44,15 @@ export default async function WalletsPage() {
             return (
               <div key={product._id} className="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row items-center md:items-start">
                 {product.image && (
-                  <Image
-                    src={urlFor(product.image)}
-                    alt={product.title}
-                    width={150}
-                    height={150}
-                    className="rounded-lg object-cover mb-4 md:mb-0 md:mr-4"
-                  />
+                  <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-4">
+                    <Image
+                      src={urlFor(product.image)}
+                      alt={product.title}
+                      width={150}
+                      height={150}
+                      className="rounded-lg object-cover w-[150px] h-[150px]"
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col flex-grow text-left">
                   <div className="font-semibold text-gray-900 text-lg">{product.title}</div>
