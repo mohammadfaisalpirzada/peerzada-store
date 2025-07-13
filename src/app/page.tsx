@@ -57,7 +57,7 @@ export default function Home() {
             >
               <div className="flex items-center justify-center gap-3">
                 <span>📝</span>
-                <span>Master Sahub's Blogs</span>
+                <span>Master Sahub&apos;s Blogs</span>
               </div>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </button>
