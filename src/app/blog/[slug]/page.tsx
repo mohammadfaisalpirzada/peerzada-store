@@ -50,7 +50,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             dir={blog.language === 'ur' ? 'rtl' : 'ltr'}
             style={{
               textShadow: '0 4px 20px rgba(0,0,0,0.1)',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+              textAlign: 'center',
+              width: '100%',
+              display: 'block'
             }}
           >
             {blog.title}
@@ -70,7 +73,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="inline-block px-6 py-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full shadow-md">
               <p className="text-gray-700 text-sm font-medium">
                 📅 {new Date(blog.publishedAt).toLocaleDateString(
-                  blog.language === 'ur' ? 'ur-PK' : 'en-US',
+                  'en-US',
                   {
                     year: 'numeric',
                     month: 'long',
@@ -96,18 +99,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       )}
       
-      {/* Blog Content with Better Line Spacing for Urdu */}
+      {/* Blog Content with Standard Text Size */}
       <article
         className={`
-          prose prose-lg max-w-none
+          prose prose-base max-w-none
           prose-headings:text-gray-900 prose-headings:font-bold
           prose-p:text-gray-700
           prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
           prose-strong:text-gray-900
           ${
             blog.language === 'ur' 
-              ? 'urdu-text !text-xl prose-p:!text-xl prose-p:!leading-loose prose-li:!text-xl prose-li:!leading-loose prose-headings:!text-2xl prose-headings:!leading-relaxed prose-strong:!text-xl !leading-loose' 
-              : 'ltr-text text-lg leading-relaxed prose-p:text-lg prose-p:leading-relaxed prose-li:text-lg prose-li:leading-relaxed'
+              ? 'urdu-text prose-p:!text-base prose-p:!leading-relaxed prose-li:!text-base prose-li:!leading-relaxed prose-headings:!text-lg prose-headings:!leading-normal prose-strong:!text-base !leading-relaxed' 
+              : 'ltr-text prose-p:text-base prose-p:leading-normal prose-li:text-base prose-li:leading-normal'
           }
         `}
         lang={blog.language}

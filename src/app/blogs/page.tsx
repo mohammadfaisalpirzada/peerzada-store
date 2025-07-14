@@ -68,19 +68,24 @@ const MasterSahub = async () => {
             
             {/* Content Section */}
             <div className="p-4 flex flex-col h-32">
-              {/* Clickable Title with Urdu Font Support */}
+              {/* Clickable Title with Enhanced Urdu Font Support */}
               <Link href={`/blog/${blog.slug.current}`}>
                 <h2 
                   className={`
-                    text-lg font-semibold mb-2 hover:text-blue-600 transition-colors duration-200 cursor-pointer line-clamp-2
+                    font-semibold mb-2 hover:text-blue-600 transition-colors duration-200 cursor-pointer line-clamp-2
                     ${
                       blog.language === 'ur' 
-                        ? 'urdu-text !text-xl !leading-relaxed' 
-                        : 'font-sans'
+                        ? 'urdu-text text-lg sm:text-xl !leading-relaxed !font-medium' 
+                        : 'font-sans text-lg'
                     }
                   `}
                   lang={blog.language}
                   dir={blog.language === 'ur' ? 'rtl' : 'ltr'}
+                  style={blog.language === 'ur' ? {
+                    fontFamily: "'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', serif",
+                    lineHeight: '1.8',
+                    letterSpacing: '0.5px'
+                  } : {}}
                 >
                   {blog.title}
                 </h2>
@@ -97,13 +102,19 @@ const MasterSahub = async () => {
                 </p>
               )}
               
-              {/* Read More Link */}
+              {/* Read More Link with Enhanced Urdu Support */}
               <div className="mt-auto">
                 <Link 
                   href={`/blog/${blog.slug.current}`} 
                   className="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline font-medium transition-colors duration-200"
                 >
-                  <span className={blog.language === 'ur' ? 'urdu-text' : ''}>
+                  <span 
+                    className={blog.language === 'ur' ? 'urdu-text' : ''}
+                    style={blog.language === 'ur' ? {
+                      fontFamily: "'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', serif",
+                      fontSize: '0.95rem'
+                    } : {}}
+                  >
                     {blog.language === 'ur' ? 'مزید پڑھیں' : 'Read more'}
                   </span>
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
