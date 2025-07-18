@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+// Remove these imports as they're not needed here
+// import Navbar from "./Navbar";
+// import Footer from "./Footer";
+// import dynamic from 'next/dynamic';
+
+// Remove dynamic import with ssr: false
+// const ClientLayout = dynamic(() => import('./ClientLayout'), { ssr: false });
+
+// Import ClientLayout directly
+import ClientLayout from './ClientLayout';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +44,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

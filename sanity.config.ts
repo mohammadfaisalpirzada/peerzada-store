@@ -25,6 +25,10 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({defaultApiVersion: apiVersion}),
   ],
+  tools: (prev) => {
+    // Ensure all tools are properly configured
+    return prev
+  }
 })
 
 

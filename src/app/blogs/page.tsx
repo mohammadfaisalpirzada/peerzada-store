@@ -36,7 +36,7 @@ const MasterSahub = async () => {
   const blogs: Blog[] = await getBlogs();
 
   return (
-    <main className="max-w-7xl mx-auto p-4">
+    <main className="max-w-7xl mx-auto p-4 pt-24">
       <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-blue-600 via-red-500 to-green-600 bg-clip-text text-transparent mb-8 drop-shadow-lg tracking-tight">
         Master Sahub Blog
       </h1>
