@@ -120,7 +120,7 @@ export default function Footer() {
             </h3>
             <p className="text-gray-400 mb-4">Have questions? Reach out to us!</p>
             <a href="tel:+923458340668" className="text-gray-400 hover:text-white transition-colors mb-2 flex items-center gap-2">
-              <span className="text-[#B80000]">📞</span> +92 345 8340668
+              <span className="text-[#B80000]">📞</span> <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => window.open('tel:+92345-8340668')}>Call us</span>
             </a>
             <a href="mailto:info@peerzada.store" className="text-gray-400 hover:text-white transition-colors mb-6 flex items-center gap-2">
               <span className="text-[#B80000]">✉️</span> info@peerzada.store

@@ -1,0 +1,51 @@
+import { getProductBySlug, getProducts } from '../getProducts';
+import { urlFor } from '@/sanity/lib/image';
+import Image from 'next/image';
+import OrderForm from '../OrderForm';
+
+export async function generateStaticParams() {
+  const products = await getProducts();
+  return products.map((product: any) => ({ slug: product.slug }));
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const product = await getProductBySlug(params.slug);
+  if (!product) {
+    return <div className="text-center py-20 text-2xl">Product not found.</div>;
+  }
+
+  return (
+    <div className="max-w-3xl mx-auto py-12 px-4">
+      <div className="flex flex-col md:flex-row gap-8">
+        <div className="w-full md:w-1/2">
+          {product.image && (
+            <Image
+              src={urlFor(product.image).url()}
+              alt={product.title}
+              width={500}
+              height={500}
+              className="rounded-lg object-cover w-full h-auto"
+            />
+          )}
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
+          <p className="text-gray-600 mb-2">{product.description}</p>
+          <div className="flex gap-4 mb-2">
+            <span className="font-semibold">Color:</span>
+            <span>{product.color || 'N/A'}</span>
+          </div>
+          <div className="flex gap-4 mb-2">
+            <span className="font-semibold">Price:</span>
+            <span>Rs. {product.price}</span>
+          </div>
+          <div className="flex gap-4 mb-2">
+            <span className="font-semibold">Stock:</span>
+            <span>{product.inStock ? 'In Stock' : 'Out of Stock'}</span>
+          </div>
+          <OrderForm product={product} />
+        </div>
+      </div>
+    </div>
+  );
+} 

@@ -8,6 +8,7 @@ export type Product = {
   price: number;
   image: any;
   brand: string;
+  color?: string;
   category: {
     title: string;
     value: string;
@@ -33,6 +34,7 @@ export async function getProducts() {
       price,
       image,
       brand,
+      color,
       "category": category->{title, "value": value.current, subcategories},
       subcategory,
       inStock
@@ -51,6 +53,7 @@ export async function getProductsByCategory(categoryValue: string) {
       price,
       image,
       brand,
+      color,
       "category": category->{title, "value": value.current, subcategories},
       subcategory,
       inStock
@@ -70,6 +73,7 @@ export async function getProductsBySubcategory(categoryValue: string, subcategor
       price,
       image,
       brand,
+      color,
       "category": category->{title, "value": value.current, subcategories},
       subcategory,
       inStock
@@ -83,5 +87,25 @@ export async function getSubcategoriesForCategory(categoryValue: string) {
   return client.fetch(
     `*[_type == "category" && value.current == $categoryValue][0].subcategories`,
     { categoryValue }
+  );
+}
+
+// Get a single product by slug
+export async function getProductBySlug(slug: string) {
+  return client.fetch(
+    `*[_type == "product" && slug.current == $slug][0] {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      price,
+      image,
+      brand,
+      color,
+      "category": category->{title, "value": value.current, subcategories},
+      subcategory,
+      inStock
+    }`,
+    { slug }
   );
 }

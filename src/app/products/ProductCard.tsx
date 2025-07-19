@@ -3,16 +3,18 @@
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 import { Product } from './getProducts';
+import { useRouter } from 'next/navigation';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const router = useRouter();
   const handleWhatsAppOrder = () => {
     const message = `Hello, I'm interested in ordering the ${product.title}. Please provide more information.`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/+923214455667?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/+923458340668?text=${encodedMessage}`, '_blank');
   };
 
   // Find the subcategory object from the category's subcategories array
@@ -31,7 +33,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const subcategoryTitle = getSubcategoryTitle();
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+    <div
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full cursor-pointer"
+      onClick={() => router.push(`/products/${product.slug}`)}
+      role="button"
+      tabIndex={0}
+      onKeyPress={e => { if (e.key === 'Enter') router.push(`/products/${product.slug}`); }}
+    >
       <div className="relative h-64 w-full">
         {product.image && (
           <Image
@@ -65,7 +73,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="mt-auto">
           <button
-            onClick={handleWhatsAppOrder}
+            onClick={e => { e.stopPropagation(); handleWhatsAppOrder(); }}
             className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition-colors duration-300 flex items-center justify-center"
             disabled={!product.inStock}
           >
