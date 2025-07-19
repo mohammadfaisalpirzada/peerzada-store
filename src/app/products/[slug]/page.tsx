@@ -2,14 +2,20 @@ import { getProductBySlug, getProducts } from '../getProducts';
 import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import OrderForm from '../OrderForm';
+import { use } from 'react';
 
 export async function generateStaticParams() {
   const products = await getProducts();
-  return products.map((product: any) => ({ slug: product.slug }));
+  return products.map((product: any) => ({ slug: String(product.slug) }));
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const product = await getProductBySlug(params.slug);
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default function Page({ params }: PageProps) {
+  const { slug } = use(params);
+  const product = use(getProductBySlug(slug));
   if (!product) {
     return <div className="text-center py-20 text-2xl">Product not found.</div>;
   }
@@ -48,4 +54,4 @@ export default async function Page({ params }: { params: { slug: string } }) {
       </div>
     </div>
   );
-} 
+}
