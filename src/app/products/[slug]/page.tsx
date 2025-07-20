@@ -41,6 +41,16 @@ export default function Page({ params }: PageProps) {
             <span className="font-semibold">Color:</span>
             <span>{product.color || 'N/A'}</span>
           </div>
+          {product.subcategory && product.category?.subcategories && (
+            <div className="flex gap-4 mb-2">
+              <span className="font-semibold">Subcategory:</span>
+              <span>{
+                product.category.subcategories.find(
+                  (subcat: any) => subcat.value === product.subcategory
+                )?.title || product.subcategory
+              }</span>
+            </div>
+          )}
           <div className="flex gap-4 mb-2">
             <span className="font-semibold">Price:</span>
             <span>Rs. {product.price}</span>

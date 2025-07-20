@@ -43,7 +43,7 @@ export default function ProductsPage({
           const subcats = await getSubcategoriesForCategory(category);
           setSubcategories(subcats || []);
           
-          const subcatObj = subcats?.find((sc: any) => sc.value === subcategory);
+          const subcatObj = subcats?.find((sc: any) => (sc.value?.current || sc.value) === subcategory);
           const subcatTitle = subcatObj?.title || (subcategory.charAt(0).toUpperCase() + subcategory.slice(1));
           
           setPageTitle(subcatTitle);
@@ -112,13 +112,13 @@ export default function ProductsPage({
               {subcategories.map((subcat: any) => (
                 <Link 
                   key={subcat.value?.current || subcat.value || subcat.title} 
-                  href={`/products?category=${category}&subcategory=${subcat.value}`}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 ${subcategory === subcat.value ? 'bg-[#B80000] text-white shadow-md' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
+                  href={`/products?category=${category}&subcategory=${subcat.value?.current || subcat.value}`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 ${subcategory === (subcat.value?.current || subcat.value) ? 'bg-[#B80000] text-white shadow-md' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}`}
                 >
                   {subcat.icon && (typeof subcat.icon === 'string' ? <span>{subcat.icon}</span> : subcat.icon)}
                   {subcat.title}
                   {subcat.count > 0 && (
-                    <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs ${subcategory === subcat.value ? 'bg-white text-[#B80000]' : 'bg-gray-300 text-gray-700'}`}>
+                    <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs ${subcategory === (subcat.value?.current || subcat.value) ? 'bg-white text-[#B80000]' : 'bg-gray-300 text-gray-700'}`}>
                       {subcat.count}
                     </span>
                   )}

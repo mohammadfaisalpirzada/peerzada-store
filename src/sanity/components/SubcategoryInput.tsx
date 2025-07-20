@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StringInputProps, useClient, set, unset } from 'sanity';
+import { StringInputProps, useClient, set, unset, useFormValue } from 'sanity';
 
 export const SubcategoryInput = React.forwardRef<HTMLSelectElement, StringInputProps>((props, ref) => {
   const { value, onChange } = props;
-  // Use type assertions to access parent/document
-  const parent = (props as any).parent;
-  const document = (props as any).document;
   const client = useClient({ apiVersion: '2023-07-03' });
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const categoryRef =
-    (parent && parent.category && parent.category._ref) ||
-    (document && document.category && document.category._ref);
+  // Use useFormValue to reactively get the selected category reference
+  const categoryRef = useFormValue(["category", "_ref"]);
 
   useEffect(() => {
     if (categoryRef) {
