@@ -7,8 +7,9 @@ import { getSubcategories } from '../explore/getCategories'; // Import getSubcat
 import ProductCard from './ProductCard';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { Suspense } from 'react';
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const [products, setProducts] = useState<any[]>([]);
   const [subcategories, setSubcategories] = useState<any[]>([]); // State for subcategories
   const [loading, setLoading] = useState(true);
@@ -144,5 +145,13 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense>
+      <ProductsPageContent />
+    </Suspense>
   );
 }

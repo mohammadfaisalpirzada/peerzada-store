@@ -3,12 +3,27 @@
 import Link from "next/link";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { getCategories, getNewArrivals } from "./getCategories";
+import { getCategories, getNewArrivals, CategoryInfo } from "./getCategories";
 import NewArrivalCard from './NewArrivalCard';
 
+// Product type from NewArrivalCard.tsx
+interface Product {
+  _id: string;
+  title: string;
+  slug: { current: string } | string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  _createdAt: string;
+  inStock?: boolean;
+  category?: {
+    title: string;
+  };
+}
+
 export default function ExplorePage() {
-  const [categories, setCategories] = useState([]);
-  const [newArrivals, setNewArrivals] = useState([]);
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
