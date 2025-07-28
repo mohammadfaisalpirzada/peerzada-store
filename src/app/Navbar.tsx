@@ -6,7 +6,7 @@ import { FaBars, FaTimes, FaStore, FaWallet, FaBlog, FaSearch, FaChevronRight } 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
   { href: '/products', label: 'Products', icon: <FaStore /> },
-  { href: '/wallets', label: 'Wallets', icon: <FaWallet /> },
+  { href: '/products?category=customised-gifts', label: 'Customised Gifts', icon: <FaWallet /> },
   { href: '/blogs', label: 'Blogs', icon: <FaBlog /> },
 ];
 
@@ -180,7 +180,7 @@ export default function Navbar() {
                             <p className="text-gray-500 text-sm">
                               {link.label === 'Explore' && 'Discover new items'}
                               {link.label === 'Products' && 'Browse our catalog'}
-                              {link.label === 'Wallets' && 'Premium wallets'}
+                              {link.label === 'Customised Gifts' && 'Premium gifts'}
                               {link.label === 'Blogs' && 'Latest articles'}
                             </p>
                           </div>

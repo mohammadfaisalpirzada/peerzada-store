@@ -7,6 +7,7 @@ export type Product = {
   description: string;
   price: number;
   image: any;
+  imageUrl?: string;
   brand: string;
   color?: string;
   category: {
@@ -26,13 +27,14 @@ export type Product = {
 // Get all products
 export async function getProducts() {
   return client.fetch(
-    `*[_type == "product"] {
+    `*[_type == "product"] | order(_createdAt desc) {
       _id,
       title,
       "slug": slug.current,
       description,
       price,
       image,
+      "imageUrl": image.asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -45,13 +47,14 @@ export async function getProducts() {
 // Get products by category
 export async function getProductsByCategory(categoryValue: string) {
   return client.fetch(
-    `*[_type == "product" && category->value.current == $categoryValue] {
+    `*[_type == "product" && category->value.current == $categoryValue] | order(_createdAt desc) {
       _id,
       title,
       "slug": slug.current,
       description,
       price,
       image,
+      "imageUrl": image.asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -65,13 +68,14 @@ export async function getProductsByCategory(categoryValue: string) {
 // Get products by subcategory
 export async function getProductsBySubcategory(categoryValue: string, subcategoryValue: string) {
   return client.fetch(
-    `*[_type == "product" && category->value.current == $categoryValue && subcategory == $subcategoryValue] {
+    `*[_type == "product" && category->value.current == $categoryValue && subcategory == $subcategoryValue] | order(_createdAt desc) {
       _id,
       title,
       "slug": slug.current,
       description,
       price,
       image,
+      "imageUrl": image.asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -100,6 +104,7 @@ export async function getProductBySlug(slug: string) {
       description,
       price,
       image,
+      "imageUrl": image.asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},

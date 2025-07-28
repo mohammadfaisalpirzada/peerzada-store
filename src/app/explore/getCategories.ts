@@ -106,3 +106,21 @@ export async function getSubcategories(categoryValue: string) {
 
   return subcategoriesWithCounts;
 }
+
+export async function getNewArrivals(limit = 6) {
+  // Fetch latest products from Sanity using _createdAt
+  const products = await client.fetch(`
+    *[_type == "product"] | order(_createdAt desc)[0...$limit] {
+      _id,
+      title,
+      slug,
+      image,
+      "imageUrl": image.asset->url,
+      price,
+      description,
+      category->{title, value},
+      _createdAt
+    }
+  `, { limit });
+  return products;
+}

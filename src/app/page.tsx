@@ -39,13 +39,13 @@ export default function Home() {
             </button>
           </Link>
 
-          <Link href="/products?category=customised-gifts&subcategory=customised-wallet" className="w-full">
+          <Link href="/products?category=customised-gifts" className="w-full">
             <button 
               className="w-full group relative overflow-hidden bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold rounded-2xl py-4 px-6 text-lg transition-all duration-300 shadow-lg hover:shadow-xl border-0 focus:outline-none focus:ring-4 focus:ring-red-300 transform hover:scale-105 active:scale-95"
             >
               <div className="flex items-center justify-center gap-3">
                 <span>🎁</span>
-                <span>Gifts</span>
+                <span>Our Premium Gifts</span>
               </div>
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             </button>
