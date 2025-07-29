@@ -1,4 +1,4 @@
-import client from "../../../sanity/sanityClient";
+import { client } from "../../sanity/lib/client";
 
 export type Product = {
   _id: string;
@@ -6,8 +6,10 @@ export type Product = {
   slug: string;
   description: string;
   price: number;
-  image: any;
-  imageUrl?: string;
+  image: any; // Legacy field
+  images?: any[]; // New multiple images field
+  imageUrl?: string; // Legacy field
+  imageUrls?: string[]; // New multiple image URLs
   brand: string;
   color?: string;
   category: {
@@ -21,7 +23,7 @@ export type Product = {
     }>;
   };
   subcategory?: string;
-  inStock: boolean;
+  inStock?: boolean;
 };
 
 // Get all products
@@ -34,7 +36,9 @@ export async function getProducts() {
       description,
       price,
       image,
+      images,
       "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -54,7 +58,9 @@ export async function getProductsByCategory(categoryValue: string) {
       description,
       price,
       image,
+      images,
       "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -75,7 +81,9 @@ export async function getProductsBySubcategory(categoryValue: string, subcategor
       description,
       price,
       image,
+      images,
       "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},
@@ -104,7 +112,9 @@ export async function getProductBySlug(slug: string) {
       description,
       price,
       image,
+      images,
       "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
       brand,
       color,
       "category": category->{title, "value": value.current, subcategories},

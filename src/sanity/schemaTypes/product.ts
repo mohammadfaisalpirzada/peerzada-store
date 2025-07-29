@@ -21,7 +21,37 @@ const productSchema: SchemaTypeDefinition = {
     },
     { name: 'description', title: 'Description', type: 'text' },
     { name: 'price', title: 'Price', type: 'number' },
-    { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
+    { 
+      name: 'images', 
+      title: 'Product Images', 
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+              description: 'Alternative text for accessibility'
+            }
+          ]
+        }
+      ],
+      options: {
+        layout: 'grid'
+      },
+      validation: Rule => Rule.max(4).error('Maximum 4 images allowed')
+    },
+    // Keep the old image field for backward compatibility
+    { 
+      name: 'image', 
+      title: 'Main Image (Legacy)', 
+      type: 'image', 
+      options: { hotspot: true },
+      description: 'This field is kept for backward compatibility. Use "Product Images" instead.'
+    },
     { name: 'brand', title: 'Brand', type: 'string' },
     { name: 'color', title: 'Color', type: 'string' },
     { 

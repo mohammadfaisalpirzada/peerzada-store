@@ -1,4 +1,4 @@
-import client from "../../../sanity/sanityClient";
+import { client } from "../../sanity/lib/client";
 
 export type CategoryInfo = {
   name: string;
@@ -36,14 +36,15 @@ export async function getCategories() {
       if (category.subcategories && category.subcategories.length > 0) {
         subcategoriesWithCounts = await Promise.all(
           category.subcategories.map(async (subcat: any) => {
+            const subcategoryValue = subcat.value?.current || subcat.value;
             const subcategoryCount = await client.fetch(
               `count(*[_type == "product" && category->value.current == $categoryValue && subcategory == $subcategoryValue])`,
-              { categoryValue: category.value, subcategoryValue: subcat.value?.current || subcat.value }
+              { categoryValue: category.value, subcategoryValue }
             );
             
             return {
               title: subcat.title,
-              value: subcat.value?.current || subcat.value,
+              value: subcategoryValue,
               icon: subcat.icon,
               description: subcat.description,
               count: subcategoryCount
@@ -78,9 +79,25 @@ export async function getCategories() {
 
 // Get subcategories for a specific category
 export async function getSubcategories(categoryValue: string) {
+  // First, let's check what products exist for this category
+  const productsInCategory = await client.fetch(`
+    *[_type == "product" && category->value.current == $categoryValue] {
+      title,
+      subcategory,
+      "categoryValue": category->value.current
+    }
+  `, { categoryValue });
+  
+  console.log('Products in category:', productsInCategory);
+
   const category = await client.fetch(`
     *[_type == "category" && value.current == $categoryValue][0] {
-      subcategories
+      subcategories[] {
+        title,
+        value,
+        icon,
+        description
+      }
     }
   `, { categoryValue });
 
@@ -89,14 +106,17 @@ export async function getSubcategories(categoryValue: string) {
   // Calculate counts for each subcategory
   const subcategoriesWithCounts = await Promise.all(
     category.subcategories.map(async (subcat: any) => {
+      const subcategoryValue = subcat.value?.current || subcat.value;
+      
+      // Count products that match this exact subcategory
       const count = await client.fetch(
         `count(*[_type == "product" && category->value.current == $categoryValue && subcategory == $subcategoryValue])`,
-        { categoryValue, subcategoryValue: subcat.value }
+        { categoryValue, subcategoryValue }
       );
       
       return {
         title: subcat.title,
-        value: subcat.value,
+        value: subcategoryValue,
         icon: subcat.icon,
         description: subcat.description,
         count
@@ -115,7 +135,9 @@ export async function getNewArrivals(limit = 6) {
       title,
       slug,
       image,
+      images,
       "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
       price,
       description,
       category->{title, value},
