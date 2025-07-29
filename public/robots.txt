@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://peerzada.store/sitemap.xml
+
+# Disallow admin areas
+Disallow: /studio/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /products/
+Allow: /explore/
+Allow: /blogs/

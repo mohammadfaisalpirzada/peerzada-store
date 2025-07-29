@@ -1,16 +1,15 @@
 import { getProductBySlug, getProducts } from '../getProducts';
-import { urlFor } from '@/sanity/lib/image';
-import Image from 'next/image';
 import OrderForm from '../OrderForm';
 import ImageGallery from '../../components/ImageGallery';
 import { use } from 'react';
+import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
   try {
     const products = await getProducts();
     return products.map((product: any) => ({ slug: String(product.slug) }));
-  } catch (error) {
-    console.error('Error generating static params:', error);
+  } catch {
+    console.error('Error generating static params');
     return [];
   }
 }
@@ -19,14 +18,73 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  
+  try {
+    const product = await getProductBySlug(slug);
+    
+    if (!product) {
+      return {
+        title: 'Product Not Found | Peerzada Store',
+        description: 'The requested product could not be found.',
+      };
+    }
+
+    const imageUrl = product.imageUrls?.[0] || product.imageUrl || 'https://peerzada.store/images/logo.png';
+    
+    return {
+      title: `${product.title} | Peerzada Store`,
+      description: `${product.description} - Price: PKR ${product.price}. Shop now at Peerzada Store with fast delivery across Pakistan.`,
+      keywords: [
+        product.title,
+        product.category?.title,
+        product.subcategory,
+        product.brand,
+        'Pakistan',
+        'online shopping',
+        'peerzada store'
+      ].filter(Boolean),
+      openGraph: {
+        title: `${product.title} | Peerzada Store`,
+        description: `${product.description} - Price: PKR ${product.price}`,
+        images: [
+          {
+            url: imageUrl.startsWith('http') ? imageUrl : `https://peerzada.store${imageUrl}`,
+            width: 800,
+            height: 600,
+            alt: product.title,
+          }
+        ],
+        type: 'website',
+        url: `https://peerzada.store/products/${slug}`,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${product.title} | Peerzada Store`,
+        description: `${product.description} - Price: PKR ${product.price}`,
+        images: [imageUrl.startsWith('http') ? imageUrl : `https://peerzada.store${imageUrl}`],
+      },
+      alternates: {
+        canonical: `https://peerzada.store/products/${slug}`,
+      },
+    };
+  } catch {
+    return {
+      title: 'Product | Peerzada Store',
+      description: 'Shop premium products at Peerzada Store.',
+    };
+  }
+}
+
 export default function Page({ params }: PageProps) {
   const { slug } = use(params);
   
   let product;
   try {
     product = use(getProductBySlug(slug));
-  } catch (error) {
-    console.error('Error fetching product:', error);
+  } catch {
+    console.error('Error fetching product');
     return <div className="text-center py-20 text-2xl">Error loading product. Please check your Sanity configuration.</div>;
   }
 
@@ -104,6 +162,34 @@ export default function Page({ params }: PageProps) {
           </div>
         </div>
       </div>
+
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": product.title,
+            "description": product.description,
+            "image": product.imageUrls?.[0] || product.imageUrl,
+            "brand": {
+              "@type": "Brand",
+              "name": product.brand || "Peerzada Store"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": product.price,
+              "priceCurrency": "PKR",
+              "availability": product.inStock !== false ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "Peerzada Store"
+              }
+            }
+          })
+        }}
+      />
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function ImageGallery({ images, imageUrl, title, className = "" }
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
               priority={selectedImageIndex === 0}
-              onError={(e) => {
+              onError={() => {
                 console.error('Image failed to load:', allImages[selectedImageIndex]);
               }}
             />
@@ -71,7 +71,7 @@ export default function ImageGallery({ images, imageUrl, title, className = "" }
                 fill
                 sizes="64px"
                 className="object-cover"
-                onError={(e) => {
+                onError={() => {
                   console.error('Thumbnail failed to load:', imageUrl);
                 }}
               />
