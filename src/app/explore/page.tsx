@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { getCategories, getNewArrivals, CategoryInfo } from "./getCategories";
 import NewArrivalCard from './NewArrivalCard';
 import { useSearchParams } from 'next/navigation';
@@ -22,13 +22,13 @@ interface Product {
   };
 }
 
-export default function ExplorePage() {
-  const [categories, setCategories] = useState<CategoryInfo[]>([]);
-  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+function SearchParamsWrapper() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const [heading, setHeading] = useState('All Categories');
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -187,5 +187,13 @@ export default function ExplorePage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchParamsWrapper />
+    </Suspense>
   );
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaTimes, FaStore, FaWallet, FaBlog, FaSearch, FaChevronRight, FaChevronDown } from 'react-icons/fa';
+import { FaBars, FaTimes, FaStore, FaBlog, FaSearch, FaChevronRight, FaChevronDown } from 'react-icons/fa';
 import { getCategories, CategoryInfo } from './explore/getCategories';
 
 const navLinks = [
