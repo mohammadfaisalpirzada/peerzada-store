@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { getCategories, getNewArrivals, CategoryInfo } from "./getCategories";
 import NewArrivalCard from './NewArrivalCard';
+import { useSearchParams } from 'next/navigation';
 
 // Product type from NewArrivalCard.tsx
 interface Product {
@@ -25,6 +26,9 @@ export default function ExplorePage() {
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [newArrivals, setNewArrivals] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category');
+  const [heading, setHeading] = useState('All Categories');
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +39,14 @@ export default function ExplorePage() {
         ]);
         setCategories(categoriesData);
         setNewArrivals(newArrivalsData);
+        // Set heading based on category param
+        if (category) {
+          // Try to find the category title from categoriesData
+          const catObj = categoriesData.find((cat: any) => cat.value === category);
+          setHeading(catObj ? catObj.name : category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
+        } else {
+          setHeading('All Categories');
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -43,7 +55,7 @@ export default function ExplorePage() {
     }
 
     fetchData();
-  }, []);
+  }, [category]);
 
   if (loading) {
     return (
@@ -67,8 +79,8 @@ export default function ExplorePage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Explore Our Categories</h1>
-          <p className="text-xl text-gray-600">Discover our wide range of premium products</p>
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-3 tracking-tight">{heading}</h1>
+          <p className="text-lg text-gray-500">Discover our wide range of premium products</p>
         </motion.div>
 
         {/* New Arrivals Section */}

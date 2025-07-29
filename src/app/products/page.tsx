@@ -32,7 +32,11 @@ function ProductsPageContent() {
           if (subcategory) {
             fetchedProducts = await getProductsBySubcategory(category, subcategory);
             const catTitle = category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            const subcatTitle = subcategory.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            // Find the subcategory title from the fetched subcategories
+            const subcatObj = fetchedSubcategories.find(
+              (subcat: any) => (subcat.value && subcat.value.toString().toLowerCase() === subcategory.toString().toLowerCase())
+            );
+            const subcatTitle = subcatObj ? subcatObj.title : subcategory.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             setPageTitle(`${subcatTitle} in ${catTitle}`);
           } else {
             fetchedProducts = await getProductsByCategory(category);

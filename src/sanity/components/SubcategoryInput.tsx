@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StringInputProps, useClient, set, unset, useFormValue } from 'sanity';
 
+// Utility to slugify a string
+function slugify(str: string) {
+  return str
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^a-z0-9\-]/g, '') // Remove all non-alphanumeric except -
+    .replace(/-+/g, '-'); // Replace multiple - with single -
+}
+
 export const SubcategoryInput = React.forwardRef<HTMLSelectElement, StringInputProps>((props, ref) => {
   const { value, onChange } = props;
   const client = useClient({ apiVersion: '2023-07-03' });
@@ -99,9 +110,10 @@ export const SubcategoryInput = React.forwardRef<HTMLSelectElement, StringInputP
         ref={ref}
         value={value || ''}
         onChange={e => {
-          const v = e.target.value;
-          if (v) {
-            onChange(set(v));
+          const selected = subcategories.find(subcat => slugify(subcat.value) === slugify(e.target.value));
+          const val = selected ? slugify(selected.value) : '';
+          if (val) {
+            onChange(set(val));
           } else {
             onChange(unset());
           }
@@ -117,9 +129,9 @@ export const SubcategoryInput = React.forwardRef<HTMLSelectElement, StringInputP
         }}
       >
         <option value="">-- Select a subcategory (optional) --</option>
-        {subcategories.map((subcat: any, index: number) => (
-          <option key={subcat.value || index} value={subcat.value}>
-            {typeof subcat.icon === 'string' ? `${subcat.icon} ` : ''}{subcat.title}
+        {subcategories.map(subcat => (
+          <option key={slugify(subcat.value)} value={slugify(subcat.value)}>
+            {subcat.title}
           </option>
         ))}
       </select>
@@ -132,7 +144,7 @@ export const SubcategoryInput = React.forwardRef<HTMLSelectElement, StringInputP
           fontSize: '12px',
           color: '#2d5a2d'
         }}>
-          ✅ Selected: {subcategories.find(s => s.value === value)?.title || value}
+          ✅ Selected: {subcategories.find(s => slugify(s.value) === slugify(value))?.title || value}
         </div>
       )}
     </div>
