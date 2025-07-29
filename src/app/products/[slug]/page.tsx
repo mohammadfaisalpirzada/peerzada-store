@@ -1,15 +1,15 @@
 import { getProductBySlug, getProducts } from '../getProducts';
 import OrderForm from '../OrderForm';
 import ImageGallery from '../../components/ImageGallery';
-import { use } from 'react';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export async function generateStaticParams() {
   try {
     const products = await getProducts();
     return products.map((product: any) => ({ slug: String(product.slug) }));
-  } catch {
-    console.error('Error generating static params');
+  } catch (error) {
+    console.error('Error generating static params:', error);
     return [];
   }
 }
@@ -69,7 +69,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         canonical: `https://peerzada.store/products/${slug}`,
       },
     };
-  } catch {
+  } catch (error) {
+    console.error('Error generating metadata:', error);
     return {
       title: 'Product | Peerzada Store',
       description: 'Shop premium products at Peerzada Store.',
@@ -77,19 +78,49 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default function Page({ params }: PageProps) {
-  const { slug } = use(params);
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
   
   let product;
   try {
-    product = use(getProductBySlug(slug));
-  } catch {
-    console.error('Error fetching product');
-    return <div className="text-center py-20 text-2xl">Error loading product. Please check your Sanity configuration.</div>;
+    product = await getProductBySlug(slug);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 pt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-20">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Error Loading Product</h1>
+            <p className="text-gray-600 mb-4">Please check your Sanity configuration.</p>
+            <Link 
+              href="/products" 
+              className="bg-[#B80000] text-white px-6 py-2 rounded-lg hover:bg-[#A00000] transition-colors"
+            >
+              Back to Products
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
-    return <div className="text-center py-20 text-2xl">Product not found.</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 pt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-20">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+            <p className="text-gray-600 mb-4">The product you&apos;re looking for doesn&apos;t exist.</p>
+            <Link 
+              href="/products" 
+              className="bg-[#B80000] text-white px-6 py-2 rounded-lg hover:bg-[#A00000] transition-colors"
+            >
+              Back to Products
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
