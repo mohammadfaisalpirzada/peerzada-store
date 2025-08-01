@@ -95,6 +95,16 @@ export default function RootLayout({
         <link rel="canonical" href="https://peerzada.store/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#B80000" />
+        {/* Add redirect script for www version */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (window.location.hostname === 'www.peerzada.store') {
+                window.location.replace('https://peerzada.store' + window.location.pathname + window.location.search);
+              }
+            `
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
