@@ -1,7 +1,13 @@
 {
   "redirects": [
     {
-      "source": "https://www.peerzada.store/:path*",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.peerzada.store"
+        }
+      ],
       "destination": "https://peerzada.store/:path*",
       "permanent": true
     }
