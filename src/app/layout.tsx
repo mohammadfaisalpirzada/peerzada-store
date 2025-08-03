@@ -92,19 +92,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Multiple canonical signals */}
         <link rel="canonical" href="https://peerzada.store/" />
+        <meta property="og:url" content="https://peerzada.store/" />
+        <meta name="twitter:url" content="https://peerzada.store/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#B80000" />
-        {/* Add redirect script for www version */}
+        
+        {/* Stronger redirect for www */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              if (window.location.hostname === 'www.peerzada.store') {
-                window.location.replace('https://peerzada.store' + window.location.pathname + window.location.search);
-              }
+              (function() {
+                if (window.location.hostname === 'www.peerzada.store') {
+                  window.location.replace('https://peerzada.store' + window.location.pathname + window.location.search);
+                }
+              })();
             `
           }}
         />
+        
+        {/* Enhanced JSON-LD with stronger canonical signals */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -122,6 +130,24 @@ export default function RootLayout({
               "sameAs": [
                 "https://peerzada.store"
               ]
+            })
+          }}
+        />
+        
+        {/* Additional canonical enforcement */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Peerzada Store",
+              "url": "https://peerzada.store",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://peerzada.store/products?search={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
             })
           }}
         />

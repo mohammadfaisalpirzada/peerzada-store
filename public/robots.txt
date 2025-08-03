@@ -1,16 +1,25 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap location (most important)
 Sitemap: https://peerzada.store/sitemap.xml
 
-# Disallow admin areas
+# Disallow admin and API areas
 Disallow: /studio/
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /.well-known/
 
-# Allow important pages
+# Allow important pages explicitly
 Allow: /products/
 Allow: /explore/
 Allow: /blogs/
+Allow: /wallets/
+
+# Crawl delay for better server performance
+Crawl-delay: 1
+
+# Additional sitemaps (if you add them later)
+# Sitemap: https://peerzada.store/product-sitemap.xml
+# Sitemap: https://peerzada.store/blog-sitemap.xml
