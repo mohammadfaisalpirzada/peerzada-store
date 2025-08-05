@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart } from 'react-icons/fa';
+import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaCode } from 'react-icons/fa';
 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
@@ -130,10 +130,41 @@ export default function Footer() {
         
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span>&copy; {new Date().getFullYear()} Peerzada Store</span>
-            <FaHeart className="text-[#B80000] animate-pulse" />
-            <span>All rights reserved.</span>
+          <div className="flex flex-col md:flex-row items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2">
+              <span>&copy; {new Date().getFullYear()} Peerzada Store</span>
+              <FaHeart className="text-[#B80000] animate-pulse" />
+              <span>All rights reserved.</span>
+            </div>
+            <motion.div 
+              className="flex items-center gap-2 mt-2 md:mt-0 md:ml-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+            >
+              <motion.span
+                className="text-2xl"
+                animate={{ 
+                  rotate: [0, 10, -10, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  repeat: Infinity,
+                  duration: 2,
+                  ease: 'easeInOut'
+                }}
+              >
+                🚀
+              </motion.span>
+              <span className="text-gray-400">Crafted with passion by</span>
+              <Link 
+                href="/resume" 
+                className="text-[#B80000] hover:text-white transition-colors font-medium flex items-center gap-1 group"
+              >
+                <FaCode className="group-hover:animate-pulse" />
+                <span className="underline decoration-dotted underline-offset-2">Muhammad Faisal Peerzada</span>
+              </Link>
+            </motion.div>
           </div>
           <div className="flex gap-6 text-sm text-gray-500">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
