@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaTimes, FaStore, FaBlog, FaSearch, FaChevronRight, FaChevronDown } from 'react-icons/fa';
+import { FaStore, FaWallet, FaBlog, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import Image from 'next/image';
 import { getCategories, CategoryInfo } from './explore/getCategories';
 
 const navLinks = [
@@ -73,12 +74,20 @@ export default function Navbar() {
   return (
     <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-        <Link href="/" className={`text-2xl font-bold tracking-tight flex items-center gap-2 transition-colors duration-300 ${scrolled ? 'text-[#B80000]' : 'text-[#B80000]'}`}>
+        <Link href="/" className={`text-2xl font-bold tracking-tight flex items-center gap-3 transition-colors duration-300 ${scrolled ? 'text-[#B80000]' : 'text-[#B80000]'}`}>
           <motion.div
-            whileHover={{ rotate: 10 }}
+            whileHover={{ rotate: 5, scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            className="relative"
           >
-            <FaStore className="text-2xl" />
+            <Image
+              src="/images/logo.svg"
+              alt="Peerzada Store Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+              priority
+            />
           </motion.div>
           <div className="flex flex-col">
             <span className="font-serif text-xl text-[#B80000]">Peerzada</span>
@@ -251,8 +260,14 @@ export default function Navbar() {
                 <div className="relative p-6 border-b border-gray-300/50">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#B80000] to-[#8B0000] rounded-xl flex items-center justify-center shadow-lg">
-                        <FaStore className="text-white text-lg" />
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
+                        <Image
+                          src="/images/logo.svg"
+                          alt="Peerzada Store Logo"
+                          width={32}
+                          height={32}
+                          className="object-contain"
+                        />
                       </div>
                       <div>
                         <h2 className="text-lg font-bold text-white">Peerzada</h2>
