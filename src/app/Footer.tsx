@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaCode } from 'react-icons/fa';
+import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
@@ -9,34 +9,44 @@ const navLinks = [
   { href: '/blogs', label: 'Blogs', icon: <FaBlog /> },
 ];
 
+const socialLinks = [
+  { href: 'https://twitter.com', icon: <FaTwitter />, label: 'Twitter' },
+  { href: 'https://www.facebook.com/peerzadastore', icon: <FaFacebook />, label: 'Facebook' },
+  { href: 'https://www.instagram.com/peerzadastore/', icon: <FaInstagram />, label: 'Instagram' },
+  { href: 'https://www.linkedin.com/in/mohammad-faisal-peerzada-b57563180/', icon: <FaLinkedin />, label: 'LinkedIn' },
+];
+
 export default function Footer() {
   return (
     <motion.footer
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-16 mt-16 relative overflow-hidden"
+      className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white mt-20 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-5"></div>
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(184,0,0,0.1),transparent_50%)]"></div>
+      </div>
       
-      {/* Decorative elements */}
+      {/* Animated Background Elements */}
       <motion.div 
-        className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#B80000] opacity-20 blur-3xl"
+        className="absolute top-10 right-10 w-32 h-32 rounded-full bg-gradient-to-r from-[#B80000] to-red-600 opacity-10 blur-2xl"
         animate={{ 
-          scale: [1, 1.2, 1],
+          scale: [1, 1.3, 1],
           opacity: [0.1, 0.2, 0.1]
         }}
         transition={{ 
           repeat: Infinity,
-          duration: 8,
+          duration: 6,
           ease: 'easeInOut'
         }}
       />
       <motion.div 
-        className="absolute -bottom-20 -left-20 w-40 h-40 rounded-full bg-[#2563EB] opacity-20 blur-3xl"
+        className="absolute bottom-10 left-10 w-24 h-24 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-10 blur-2xl"
         animate={{ 
           scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1]
+          opacity: [0.1, 0.15, 0.1]
         }}
         transition={{ 
           repeat: Infinity,
@@ -46,132 +56,198 @@ export default function Footer() {
         }}
       />
       
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* Brand section */}
-          <div className="flex flex-col items-center md:items-start">
-            <Link href="/" className="text-2xl font-bold tracking-tight flex items-center gap-2 mb-4">
-              <FaStore className="text-2xl text-[#B80000]" />
-              <span className="font-serif">Peerzada</span>
-            </Link>
-            <p className="text-gray-400 text-center md:text-left mb-6">Premium quality products for your everyday needs.</p>
-            <div className="flex gap-4">
-              <motion.a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#B80000] hover:text-white transition-all duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaSearch />
-              </motion.a>
-              <motion.a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#B80000] hover:text-white transition-all duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaStore />
-              </motion.a>
-              <motion.a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-[#B80000] hover:text-white transition-all duration-300"
-                whileHover={{ y: -3 }}
-              >
-                <FaWallet />
-              </motion.a>
-            </div>
-          </div>
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
           
-          {/* Quick links */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-semibold mb-6 relative">
-              <span className="relative z-10">Quick Links</span>
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-[#B80000] opacity-70 z-0"></span>
-            </h3>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-              {navLinks.map(link => (
-                <Link 
-                  key={link.href} 
-                  href={link.href} 
-                  className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
-                >
-                  <motion.span 
-                    className="text-[#B80000]"
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                  >
-                    {link.icon}
-                  </motion.span>
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">{link.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-          
-          {/* Contact */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-semibold mb-6 relative">
-              <span className="relative z-10">Contact Us</span>
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-[#B80000] opacity-70 z-0"></span>
-            </h3>
-            <p className="text-gray-400 mb-4">Have questions? Reach out to us!</p>
-            <a href="tel:+923458340668" className="text-gray-400 hover:text-white transition-colors mb-2 flex items-center gap-2">
-              <span className="text-[#B80000]">📞</span> <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => window.open('tel:+92345-8340668')}>Call us</span>
-            </a>
-            <a href="mailto:info@peerzada.store" className="text-gray-400 hover:text-white transition-colors mb-6 flex items-center gap-2">
-              <span className="text-[#B80000]">✉️</span> info@peerzada.store
-            </a>
-          </div>
-        </div>
-        
-        {/* Copyright */}
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col md:flex-row items-center gap-2 text-sm text-gray-400">
-            <div className="flex items-center gap-2">
-              <span>&copy; {new Date().getFullYear()} Peerzada Store</span>
-              <FaHeart className="text-[#B80000] animate-pulse" />
-              <span>All rights reserved.</span>
-            </div>
-            <motion.div 
-              className="flex items-center gap-2 mt-2 md:mt-0 md:ml-4"
+          {/* Brand Section */}
+          <div className="lg:col-span-2">
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <motion.span
-                className="text-2xl"
-                animate={{ 
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ 
-                  repeat: Infinity,
-                  duration: 2,
-                  ease: 'easeInOut'
-                }}
-              >
-                🚀
-              </motion.span>
-              <span className="text-gray-400">Crafted with passion by</span>
-              <Link 
-                href="/resume" 
-                className="text-[#B80000] hover:text-white transition-colors font-medium flex items-center gap-1 group"
-              >
-                <FaCode className="group-hover:animate-pulse" />
-                <span className="underline decoration-dotted underline-offset-2">Muhammad Faisal Peerzada</span>
+              <Link href="/" className="inline-flex items-center gap-3 mb-4 group">
+                <motion.div
+                  whileHover={{ rotate: 15, scale: 1.1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                  className="p-2 bg-gradient-to-br from-[#B80000] to-red-600 rounded-xl shadow-lg"
+                >
+                  <FaStore className="text-xl text-white" />
+                </motion.div>
+                <div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    Peerzada
+                  </h2>
+                  <p className="text-xs text-gray-400 -mt-1">Premium Store</p>
+                </div>
               </Link>
+              
+              <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
+                Discover premium quality products crafted for your everyday needs. 
+                Experience excellence in every purchase.
+              </p>
+              
+              {/* Social Links */}
+              <div className="flex gap-3">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#B80000] hover:border-[#B80000] transition-all duration-300 group"
+                    whileHover={{ y: -2, scale: 1.05 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
+                  >
+                    <span className="group-hover:scale-110 transition-transform duration-200">
+                      {social.icon}
+                    </span>
+                  </motion.a>
+                ))}
+              </div>
             </motion.div>
           </div>
-          <div className="flex gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Shipping Info</a>
-          </div>
+          
+          {/* Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            <h3 className="text-lg font-semibold mb-6 relative">
+              <span className="relative">
+                Quick Links
+                <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-gradient-to-r from-[#B80000] to-red-600 rounded-full"></span>
+              </span>
+            </h3>
+            <div className="space-y-3">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
+                >
+                  <Link 
+                    href={link.href} 
+                    className="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 group py-1"
+                  >
+                    <motion.span 
+                      className="text-[#B80000] group-hover:text-white transition-colors duration-300"
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                    >
+                      {link.icon}
+                    </motion.span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {link.label}
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+          
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            <h3 className="text-lg font-semibold mb-6 relative">
+              <span className="relative">
+                Get in Touch
+                <span className="absolute -bottom-1 left-0 w-8 h-0.5 bg-gradient-to-r from-[#B80000] to-red-600 rounded-full"></span>
+              </span>
+            </h3>
+            <div className="space-y-4">
+              <motion.a 
+                href="tel:+923458340668" 
+                className="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 group"
+                whileHover={{ x: 5 }}
+              >
+                <div className="w-8 h-8 rounded-lg bg-[#B80000]/20 flex items-center justify-center group-hover:bg-[#B80000] transition-colors duration-300">
+                  <FaPhone className="text-sm text-[#B80000] group-hover:text-white" />
+                </div>
+                <span className="text-sm">Call Now</span>
+              </motion.a>
+              
+              <motion.a 
+                href="mailto:info@peerzada.store" 
+                className="flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300 group"
+                whileHover={{ x: 5 }}
+              >
+                <div className="w-8 h-8 rounded-lg bg-[#B80000]/20 flex items-center justify-center group-hover:bg-[#B80000] transition-colors duration-300">
+                  <FaEnvelope className="text-sm text-[#B80000] group-hover:text-white" />
+                </div>
+                <span className="text-sm">info@peerzada.store</span>
+              </motion.a>
+            </div>
+          </motion.div>
         </div>
+        
+        {/* Bottom Section */}
+        <motion.div 
+          className="border-t border-gray-800/50 pt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            {/* Copyright */}
+            <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <span>&copy; {new Date().getFullYear()} Peerzada Store</span>
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                >
+                  <FaHeart className="text-[#B80000]" />
+                </motion.div>
+                <span>All rights reserved</span>
+              </div>
+              
+              {/* Developer Credit */}
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+              >
+                <span className="text-gray-500">Crafted by</span>
+                <Link 
+                  href="/resume" 
+                  className="text-[#B80000] hover:text-white transition-colors font-medium relative group"
+                >
+                  <span className="relative">
+                    Muhammad Faisal Peerzada
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+                  </span>
+                </Link>
+              </motion.div>
+            </div>
+            
+            {/* Legal Links */}
+            <div className="flex gap-6 text-sm text-gray-500">
+              <a href="#" className="hover:text-white transition-colors relative group">
+                <span>Privacy Policy</span>
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#" className="hover:text-white transition-colors relative group">
+                <span>Terms of Service</span>
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#" className="hover:text-white transition-colors relative group">
+                <span>Shipping Info</span>
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </motion.footer>
   );

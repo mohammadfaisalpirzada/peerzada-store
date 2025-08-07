@@ -25,7 +25,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
+    <main className="max-w-4xl mx-auto p-6 pt-22">
       {/* Stylish Title */}
       <div className="text-center mb-12 relative">
         {/* Background decoration */}

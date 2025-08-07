@@ -81,7 +81,7 @@ export default function Navbar() {
             <FaStore className="text-2xl" />
           </motion.div>
           <div className="flex flex-col">
-            <span className="font-serif text-xl text-[#B80000]">Peerzada</span> {/* Changed to red */}
+            <span className="font-serif text-xl text-[#B80000]">Peerzada</span>
             <span className="text-xs text-gray-500 font-normal -mt-1">Premium Store</span>
           </div>
         </Link>
@@ -100,29 +100,36 @@ export default function Navbar() {
             </Link>
           ))}
           {/* All Categories Mega Dropdown */}
-          {rest.length > 0 && (
-            <div className="relative group flex items-center" style={{ minHeight: '56px' }} onMouseEnter={() => setAllDropdownOpen(true)} onMouseLeave={() => { setAllDropdownOpen(false); setSubmenuOpen(null); }}>
-              <button className={`flex items-center gap-2 transition-all duration-300 text-lg font-medium relative group px-4 py-2 rounded-md ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
+          {categories.length > 0 && (
+            <div 
+              className="relative group flex items-center" 
+              onMouseEnter={() => setAllDropdownOpen(true)} 
+              onMouseLeave={() => { setAllDropdownOpen(false); setSubmenuOpen(null); }}
+            >
+              <button 
+                className={`flex items-center gap-2 transition-all duration-300 text-lg font-medium relative group px-4 py-2 rounded-md ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
                 onClick={() => setAllDropdownOpen(v => !v)}
                 type="button"
-                style={{ minHeight: '48px' }}
               >
                 <FaStore className="text-[#B80000] text-2xl font-bold" />
                 <span>All Categories</span>
-                <FaChevronDown className="ml-1 text-xs" />
+                <FaChevronDown className={`ml-1 text-xs transition-transform duration-200 ${allDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {allDropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-100 z-50 py-2 px-2 flex"
-                    style={{ minHeight: '56px' }}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 z-[60] py-4 px-2"
+                    style={{ 
+                      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                      backdropFilter: 'blur(10px)'
+                    }}
                   >
-                    <div className="w-1/2">
-                      {rest.map(cat => (
+                    <div className="grid grid-cols-1 gap-1">
+                      {categories.map(cat => (
                         <div
                           key={cat.value}
                           className="relative"
@@ -131,32 +138,37 @@ export default function Navbar() {
                         >
                           <Link
                             href={`/products?category=${cat.value}`}
-                            className="block px-4 py-2 text-gray-800 hover:bg-[#B80000]/10 hover:text-[#B80000] transition-colors rounded flex items-center gap-2 min-h-[44px]"
+                            className="group flex items-center justify-between px-4 py-3 text-gray-800 hover:bg-gradient-to-r hover:from-[#B80000]/5 hover:to-[#B80000]/10 hover:text-[#B80000] transition-all duration-200 rounded-lg"
                             onClick={() => setAllDropdownOpen(false)}
                           >
-                            <span className="text-[#B80000] text-2xl font-bold">
-                              {cat.icon ? cat.icon : <FaStore />}
-                            </span>
-                            {cat.name}
+                            <div className="flex items-center gap-3">
+                              <span className="text-[#B80000] text-xl">
+                                {cat.icon ? cat.icon : <FaStore />}
+                              </span>
+                              <span className="font-medium">{cat.name}</span>
+                            </div>
                             {cat.subcategories && cat.subcategories.length > 0 && (
-                              <FaChevronRight className="inline ml-2 text-xs" />
+                              <FaChevronRight className="text-xs text-gray-400 group-hover:text-[#B80000] transition-colors" />
                             )}
                           </Link>
                           {/* Submenu for subcategories */}
                           {cat.subcategories && cat.subcategories.length > 0 && submenuOpen === cat.value && (
                             <motion.div
-                              initial={{ opacity: 0, x: 10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: 10 }}
-                              transition={{ duration: 0.2 }}
-                              className="absolute top-0 left-full w-56 bg-white rounded-lg shadow-lg border border-gray-100 z-50 py-2 px-2"
-                              style={{ minHeight: '44px' }}
+                              initial={{ opacity: 0, x: 10, scale: 0.95 }}
+                              animate={{ opacity: 1, x: 0, scale: 1 }}
+                              exit={{ opacity: 0, x: 10, scale: 0.95 }}
+                              transition={{ duration: 0.15, ease: "easeOut" }}
+                              className="absolute top-0 left-full ml-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 z-[70] py-3 px-2"
+                              style={{ 
+                                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                                backdropFilter: 'blur(10px)'
+                              }}
                             >
                               {cat.subcategories.map(subcat => (
                                 <Link
                                   key={subcat.value}
                                   href={`/products?category=${cat.value}&subcategory=${subcat.value}`}
-                                  className="block px-4 py-2 text-gray-800 hover:bg-[#B80000]/10 hover:text-[#B80000] transition-colors rounded min-h-[40px]"
+                                  className="block px-4 py-2 text-gray-700 hover:bg-gradient-to-r hover:from-[#B80000]/5 hover:to-[#B80000]/10 hover:text-[#B80000] transition-all duration-200 rounded-lg font-medium"
                                   onClick={() => { setAllDropdownOpen(false); setSubmenuOpen(null); }}
                                 >
                                   {subcat.title}
