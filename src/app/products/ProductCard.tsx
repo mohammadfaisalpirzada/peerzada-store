@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
 import { Product } from './getProducts';
 import { useRouter } from 'next/navigation';
+import { PakistanFlag } from '../utils/flagUtils';
 
 interface ProductCardProps {
   product: Product;
@@ -41,6 +42,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       onKeyPress={e => { if (e.key === 'Enter') router.push(`/products/${product.slug}`); }}
     >
       <div className="relative h-64 w-full">
+        <PakistanFlag />
         {product.image && (
           <Image
             src={urlFor(product.image).url()}

@@ -21,6 +21,13 @@ const productSchema: SchemaTypeDefinition = {
     },
     { name: 'description', title: 'Description', type: 'text' },
     { name: 'price', title: 'Price', type: 'number' },
+    {
+      name: 'mainImage',
+      title: 'Main Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Primary image used for API/webhook uploads and featured product displays'
+    },
     { 
       name: 'images', 
       title: 'Product Images', 

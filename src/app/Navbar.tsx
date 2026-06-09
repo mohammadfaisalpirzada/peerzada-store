@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import Image from 'next/image';
 import { getCategories, CategoryInfo } from './explore/getCategories';
 
@@ -15,11 +15,6 @@ const navLinks = [
     href: '/explore',
     label: 'Explore',
     icon: <FaSearch className="text-[#007BFF] text-2xl font-bold" />,
-  },
-  {
-    href: '/blogs',
-    label: 'Blogs',
-    icon: <FaBlog className="text-[#28A745] text-2xl font-bold" />,
   },
 ];
 
@@ -69,7 +64,6 @@ export default function Navbar() {
 
   // Split categories
   const firstTwo = categories.slice(0, 2);
-  const rest = categories.slice(2);
 
   return (
     <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'}`}>
@@ -387,7 +381,6 @@ export default function Navbar() {
                             <p className="text-gray-500 text-sm">
                               {link.label === 'Explore' && 'Discover new items'}
                               {link.label === 'All Products' && 'Browse our catalog'}
-                              {link.label === 'Blogs' && 'Latest articles'}
                             </p>
                           </div>
                         </div>

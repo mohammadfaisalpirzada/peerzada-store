@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { PakistanFlag } from '../utils/flagUtils';
 
 interface Product {
   _id: string;
@@ -48,6 +49,7 @@ export default function NewArrivalCard({ product }: NewArrivalCardProps) {
       onKeyPress={e => { if (e.key === 'Enter') handleCardClick(); }}
     >
       <div className="relative h-64 w-full">
+        <PakistanFlag />
         {/* Blinking New Arrival Badge */}
         <motion.div
           animate={{ 

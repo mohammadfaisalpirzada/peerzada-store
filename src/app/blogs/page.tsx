@@ -48,7 +48,7 @@ const MasterSahub = async () => {
             {/* Clickable Image with Increased Height */}
             {blog.mainImage ? (
               <Link href={`/blog/${blog.slug.current}`} className="block">
-                <div className="relative w-full h-80 overflow-hidden">
+                <div className="relative w-full h-64 sm:h-72 md:h-80 overflow-hidden">
                   <Image
                     src={urlFor(blog.mainImage).width(400).height(350).url()}
                     alt={blog.title}
@@ -60,7 +60,7 @@ const MasterSahub = async () => {
               </Link>
             ) : (
               <Link href={`/blog/${blog.slug.current}`} className="block">
-                <div className="w-full h-80 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center hover:from-gray-300 hover:to-gray-400 transition-colors duration-300">
+                <div className="w-full h-64 sm:h-72 md:h-80 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center hover:from-gray-300 hover:to-gray-400 transition-colors duration-300">
                   <span className="text-gray-500 text-lg font-medium">No Image</span>
                 </div>
               </Link>

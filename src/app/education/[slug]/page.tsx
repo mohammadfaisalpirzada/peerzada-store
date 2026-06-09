@@ -9,23 +9,55 @@ function urlFor(source: Record<string, unknown>) {
   return builder.image(source);
 }
 
-async function getBlogBySlug(slug: string) {
-  const query = `*[_type == "blog" && slug.current == $slug][0]`;
+async function getEducationalContentBySlug(slug: string) {
+  const query = `*[_type == "educational" && slug.current == $slug][0]`;
   return client.fetch(query, { slug }, {
     next: { revalidate: 0 } // Always fetch fresh data
   });
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const blog = await getBlogBySlug(slug);
+const contentTypeEmoji: Record<string, string> = {
+  'math-ix': '📐',
+  'math-x': '📏',
+  'notes': '📝',
+  'tutorial': '📚',
+  'solution': '✅'
+};
 
-  if (!blog) {
+const contentTypeLabel: Record<string, string> = {
+  'math-ix': 'Mathematics IX',
+  'math-x': 'Mathematics X',
+  'notes': 'Subject Notes',
+  'tutorial': 'Tutorial',
+  'solution': 'Solution'
+};
+
+export default async function EducationalContentPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const content = await getEducationalContentBySlug(slug);
+
+  if (!content) {
     notFound();
   }
 
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 p-6 pt-24">
+      {/* Content Type and Subject Badges */}
+      <div className="flex flex-wrap gap-2 mb-4 justify-center">
+        <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full flex items-center">
+          <span className="mr-1">{contentTypeEmoji[content.contentType]}</span>
+          {contentTypeLabel[content.contentType]}
+        </span>
+        <span className="bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full">
+          {content.subject}
+        </span>
+        {content.grade && (
+          <span className="bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full">
+            Class {content.grade}
+          </span>
+        )}
+      </div>
+      
       {/* Stylish Title */}
       <div className="text-center mb-12 relative">
         {/* Background decoration */}
@@ -41,13 +73,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               transform transition-all duration-500 hover:scale-105
               animate-fade-in
               ${
-                blog.language === 'ur' 
+                content.language === 'ur' 
                   ? 'urdu-text !text-3xl md:!text-4xl lg:!text-5xl tracking-wide' 
                   : 'font-sans text-3xl md:text-4xl lg:text-5xl tracking-tight'
               }
             `}
-            lang={blog.language}
-            dir={blog.language === 'ur' ? 'rtl' : 'ltr'}
+            lang={content.language}
+            dir={content.language === 'ur' ? 'rtl' : 'ltr'}
             style={{
               textShadow: '0 4px 20px rgba(0,0,0,0.1)',
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
@@ -56,7 +88,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               display: 'block'
             }}
           >
-            {blog.title}
+            {content.title}
           </h1>
           
           {/* Stylish decorative elements */}
@@ -69,10 +101,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
           
           {/* Publication date */}
-          {blog.publishedAt && (
+          {content.publishedAt && (
             <div className="inline-block px-6 py-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full shadow-md">
               <p className="text-gray-700 text-sm font-medium">
-                📅 {new Date(blog.publishedAt).toLocaleDateString(
+                📅 {new Date(content.publishedAt).toLocaleDateString(
                   'en-US',
                   {
                     year: 'numeric',
@@ -87,11 +119,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </div>
 
       {/* Featured Image - Normal Size */}
-      {blog.mainImage && (
+      {content.mainImage && (
         <div className="mb-8 rounded-2xl overflow-hidden shadow-2xl">
           <Image
-            src={urlFor(blog.mainImage).width(800).url()}
-            alt={blog.title}
+            src={urlFor(content.mainImage).width(800).url()}
+            alt={content.title}
             width={800}
             height={600}
             className="w-full h-auto object-cover"
@@ -99,7 +131,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       )}
       
-      {/* Blog Content with Standard Text Size */}
+      {/* Content Body with Standard Text Size */}
       <article
         className={`
           prose prose-base max-w-none
@@ -108,18 +140,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
           prose-strong:text-gray-900
           ${
-            blog.language === 'ur' 
+            content.language === 'ur' 
               ? 'urdu-text prose-p:!text-base prose-p:!leading-relaxed prose-li:!text-base prose-li:!leading-relaxed prose-headings:!text-lg prose-headings:!leading-normal prose-strong:!text-base !leading-relaxed' 
               : 'ltr-text prose-p:text-base prose-p:leading-normal prose-li:text-base prose-li:leading-normal'
           }
         `}
-        lang={blog.language}
-        dir={blog.language === 'ur' ? 'rtl' : 'ltr'}
+        lang={content.language}
+        dir={content.language === 'ur' ? 'rtl' : 'ltr'}
         style={{
-          marginBottom: blog.language === 'ur' ? '2rem' : '1rem'
+          marginBottom: content.language === 'ur' ? '2rem' : '1rem'
         }}
       >
-        <PortableText value={blog.body} />
+        <PortableText value={content.body} />
       </article>
     </main>
   );

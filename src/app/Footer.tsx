@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin, FaBook } from 'react-icons/fa';
 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
   { href: '/products', label: 'Products', icon: <FaStore /> },
   { href: '/wallets', label: 'Wallets', icon: <FaWallet /> },
   { href: '/blogs', label: 'Blogs', icon: <FaBlog /> },
+  { href: '/education', label: 'Education', icon: <FaBook /> },
 ];
 
 const socialLinks = [
@@ -22,7 +23,7 @@ export default function Footer() {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white mt-20 overflow-hidden"
+      className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
