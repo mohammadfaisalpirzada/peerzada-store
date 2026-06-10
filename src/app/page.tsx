@@ -1,5 +1,7 @@
 'use client';
 
+import Footer from "./Footer";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaFacebookF, FaShippingFast, FaShieldAlt, FaWallet } from "react-icons/fa";
@@ -27,20 +29,21 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div className="space-y-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-[#B80000]/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-[#B80000]">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#B80000] text-white">🔥</span>
-                Premium ecommerce store
-              </span>
+              <div className="flex items-center justify-center">
+                <div className="h-28 w-28 overflow-hidden rounded-[2.5rem] bg-white p-3">
+                  <Image src="/images/logo.svg" alt="Peerzada Store logo" width={112} height={112} className="object-contain" />
+                </div>
+              </div>
 
-              <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-                Authentic wallets, gifts, and premium accessories built for style.
+              <h1 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl text-center lg:text-left">
+                Wallets, gifts, and premium accessories built for style.
               </h1>
 
-              <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+              <p className="mx-auto max-w-2xl text-base leading-8 text-slate-600 sm:text-lg lg:mx-0 lg:max-w-xl text-center lg:text-left">
                 Shop premium leather wallets, customized gifts, and fast delivery across Pakistan with secure checkout and trusted support.
               </p>
 
-              <div className="grid gap-3 sm:grid-cols-2 sm:items-center sm:gap-4 lg:max-w-xl">
+              <div className="grid gap-3 sm:grid-cols-2 sm:items-center sm:gap-4 lg:max-w-xl mx-auto lg:mx-0">
                 <Link
                   href="/explore"
                   className="inline-flex items-center justify-center rounded-full bg-[#B80000] px-6 py-4 text-base font-semibold text-white shadow-lg shadow-[#B80000]/20 transition hover:bg-[#9b0000]"
@@ -58,35 +61,6 @@ export default function Home() {
                 </Link>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3">
-                <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#B80000]/10 text-[#B80000]">
-                    <FaShippingFast className="h-5 w-5" />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-slate-900">Fast Delivery</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    Delivered quickly across Pakistan with secure packaging.
-                  </p>
-                </div>
-                <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#B80000]/10 text-[#B80000]">
-                    <FaShieldAlt className="h-5 w-5" />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-slate-900">Safe Payments</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    Trusted checkout and secure order processing for every purchase.
-                  </p>
-                </div>
-                <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow duration-300 hover:shadow-md">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#B80000]/10 text-[#B80000]">
-                    <FaWallet className="h-5 w-5" />
-                  </div>
-                  <h2 className="mt-4 text-lg font-semibold text-slate-900">Premium Quality</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    Handpicked products with luxury finishes and authentic craftsmanship.
-                  </p>
-                </div>
-              </div>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
@@ -144,6 +118,31 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 sm:grid-cols-3">
+            <div className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <p className="text-3xl font-black text-[#B80000]">Fast Delivery</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Delivered quickly across Pakistan with secure packaging.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <p className="text-3xl font-black text-[#B80000]">Safe Payments</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Trusted checkout and secure order processing for every purchase.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <p className="text-3xl font-black text-[#B80000]">Premium Quality</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Handpicked products with luxury finishes and authentic craftsmanship.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[#B80000] text-white">
         <div className="max-w-7xl mx-auto grid gap-4 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:grid-cols-3 text-center">
           <div className="rounded-[2rem] border border-white/10 bg-white/10 p-6">
@@ -160,6 +159,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
