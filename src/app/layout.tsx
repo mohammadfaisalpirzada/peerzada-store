@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from './ClientLayout';
+import SessionProvider from './SessionProvider';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
@@ -145,8 +146,10 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
-        <ClientLayout>{children}</ClientLayout>
-        <SpeedInsights />
+        <SessionProvider>
+          <ClientLayout>{children}</ClientLayout>
+          <SpeedInsights />
+        </SessionProvider>
       </body>
     </html>
   );

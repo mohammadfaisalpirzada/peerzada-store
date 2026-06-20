@@ -42,7 +42,11 @@ export default function BlogHeader() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent tracking-tight">
+<<<<<<< HEAD
                 Master Sahub&apos;s
+=======
+                Master Sahub&rsquo;s
+>>>>>>> b90f073 (login added)
               </span>
               <span className="text-xs text-gray-600 font-medium tracking-wide">
                 Educational Hub

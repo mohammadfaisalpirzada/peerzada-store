@@ -7,11 +7,19 @@ import BlogFooter from './BlogFooter';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+<<<<<<< HEAD
   const isLanding = pathname === '/';
   
   // Define pages that should have commerce navbar and footer
   const shouldShowCommerceNavAndFooter = () => {
     if (isLanding) return false;
+=======
+  
+  // Define pages that should have commerce navbar and footer
+  const shouldShowCommerceNavAndFooter = () => {
+    // Show on landing page too (now an e-commerce landing page)
+    if (pathname === '/') return true;
+>>>>>>> b90f073 (login added)
     
     // Exclude blogs and educational resources
     if (pathname.startsWith('/blogs') || pathname.startsWith('/blog') || pathname.startsWith('/education')) {
@@ -19,7 +27,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
     
     // Include specific pages: explore, products, wallets, etc.
+<<<<<<< HEAD
     const includedPaths = ['/explore', '/products', '/wallets', '/premium', '/customised', '/gifts'];
+=======
+    const includedPaths = ['/explore', '/products', '/wallets', '/premium', '/customised', '/gifts', '/login', '/privacy'];
+>>>>>>> b90f073 (login added)
     return includedPaths.some(path => pathname.startsWith(path)) || pathname === '/store';
   };
   
@@ -41,7 +53,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {showBlogNavFooter && <BlogHeader />}
       
       {/* Main Content */}
+<<<<<<< HEAD
       <main className={`flex-1 ${showAnyHeader ? 'pt-20' : ''}`}>
+=======
+      <main className={`flex-1 ${showAnyHeader ? 'pt-16' : ''}`}>
+>>>>>>> b90f073 (login added)
         {children}
       </main>
       

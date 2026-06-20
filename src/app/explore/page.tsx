@@ -1,13 +1,37 @@
 'use client';
 
 import Link from "next/link";
-import { motion } from 'framer-motion';
-import { useEffect, useState, Suspense } from 'react';
-import { getCategories, getNewArrivals, CategoryInfo } from "./getCategories";
+import Image from "next/image";
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import NewArrivalCard from './NewArrivalCard';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useDebounce } from '../utils/useDebounce';
 
-// Product type from NewArrivalCard.tsx
+interface CategoryInfo {
+  name: string;
+  value: string;
+  icon: string;
+  count: number;
+  description?: string;
+}
+
+// Product type from Sanity
+interface SearchProduct {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  price: number;
+  imageUrl?: string;
+  brand?: string;
+  inStock?: boolean;
+  category?: {
+    title: string;
+    value: string;
+  };
+}
+
 interface Product {
   _id: string;
   title: string;
@@ -22,6 +46,187 @@ interface Product {
   };
 }
 
+function SearchBar() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SearchProduct[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const debouncedQuery = useDebounce(query, 400);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  // Fetch search results when debounced query changes
+  useEffect(() => {
+    if (!debouncedQuery.trim()) {
+      setResults([]);
+      return;
+    }
+
+    async function fetchResults() {
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedQuery)}`);
+        const data = await res.json();
+        setResults(data ?? []);
+        setShowResults(true);
+      } catch (err) {
+        console.error('Search error:', err);
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+
+    fetchResults();
+  }, [debouncedQuery]);
+
+  // Click outside to close results
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowResults(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const navigateToProduct = (slug: string) => {
+    setShowResults(false);
+    setQuery('');
+    router.push(`/products/${slug}`);
+  };
+
+  return (
+    <div ref={searchRef} className="relative w-full max-w-2xl mx-auto">
+      <div className="relative">
+        {/* Search Icon */}
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <svg className={`w-5 h-5 ${isSearching ? 'text-[#B80000]' : 'text-gray-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </div>
+
+        {/* Input */}
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); if (e.target.value) setShowResults(true); }}
+          onFocus={() => { if (results.length > 0) setShowResults(true); }}
+          placeholder="Search products by name, brand, or description..."
+          className="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-200 rounded-2xl text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#B80000]/20 focus:border-[#B80000] shadow-sm hover:shadow-md transition-all duration-300"
+        />
+
+        {/* Clear / Spinner */}
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+          {isSearching ? (
+            <div className="w-5 h-5 border-2 border-[#B80000] border-t-transparent rounded-full animate-spin" />
+          ) : query ? (
+            <button
+              onClick={() => { setQuery(''); setResults([]); setShowResults(false); }}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+              type="button"
+              aria-label="Clear search"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          ) : (
+            <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+          )}
+        </div>
+      </div>
+
+      {/* Search Results Dropdown */}
+      <AnimatePresence>
+        {showResults && (debouncedQuery.trim()) && (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 max-h-96 overflow-y-auto"
+          >
+            {results.length === 0 && !isSearching ? (
+              <div className="p-8 text-center">
+                <svg className="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                <p className="text-gray-500 font-medium">No products found</p>
+                <p className="text-gray-400 text-sm mt-1">Try a different search term</p>
+              </div>
+            ) : (
+              results.map((product) => (
+                <button
+                  key={product._id}
+                  onClick={() => navigateToProduct(product.slug)}
+                  className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-50 transition-colors text-left border-b border-gray-50 last:border-b-0 group"
+                  type="button"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-14 h-14 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                    {product.imageUrl ? (
+                      <Image
+                        src={product.imageUrl}
+                        alt={product.title}
+                        width={56}
+                        height={56}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Details */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-gray-900 group-hover:text-[#B80000] transition-colors truncate">
+                      {product.title}
+                    </h4>
+                    {product.brand && (
+                      <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                    )}
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm font-bold text-gray-900">Rs. {product.price}</span>
+                      {product.category?.title && (
+                        <span className="text-xs bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded">
+                          {product.category.title}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <svg className="w-5 h-5 text-gray-300 group-hover:text-[#B80000] transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              ))
+            )}
+
+            {/* View all results link */}
+            {results.length > 0 && (
+              <Link
+                href={`/products?search=${encodeURIComponent(debouncedQuery)}`}
+                onClick={() => { setShowResults(false); setQuery(''); }}
+                className="block w-full text-center py-3 bg-gray-50 hover:bg-gray-100 text-sm font-medium text-[#B80000] transition-colors"
+              >
+                View all {results.length} results
+              </Link>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function SearchParamsWrapper() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
@@ -33,16 +238,18 @@ function SearchParamsWrapper() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [categoriesData, newArrivalsData] = await Promise.all([
-          getCategories(),
-          getNewArrivals(4)
+        const [categoriesRes, newArrivalsRes] = await Promise.all([
+          fetch('/api/categories'),
+          fetch('/api/new-arrivals?limit=4'),
         ]);
-        setCategories(categoriesData);
-        setNewArrivals(newArrivalsData);
+        const categoriesData = await categoriesRes.json();
+        const newArrivalsData = await newArrivalsRes.json();
+        setCategories(categoriesData ?? []);
+        setNewArrivals(newArrivalsData ?? []);
         // Set heading based on category param
         if (category) {
           // Try to find the category title from categoriesData
-          const catObj = categoriesData.find((cat: any) => cat.value === category);
+          const catObj = (categoriesData ?? []).find((cat: any) => cat.value === category);
           setHeading(catObj ? catObj.name : category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
         } else {
           setHeading('All Categories');
@@ -73,14 +280,25 @@ function SearchParamsWrapper() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h1 className="text-5xl font-extrabold text-gray-900 mb-3 tracking-tight">{heading}</h1>
           <p className="text-lg text-gray-500">Discover our wide range of premium products</p>
+        </motion.div>
+
+        {/* SEARCH BAR */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-12"
+        >
+          <SearchBar />
         </motion.div>
 
         {/* New Arrivals Section */}
@@ -143,6 +361,7 @@ function SearchParamsWrapper() {
           </motion.div>
         </div>
 
+        {/* Categories Grid */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
