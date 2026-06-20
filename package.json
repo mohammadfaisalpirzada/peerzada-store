@@ -16,7 +16,7 @@
     "@sanity/client": "^6.0.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/ui": "^3.0.0",
-    "@sanity/vision": "^4.3.0",
+    "@sanity/vision": "^3.70.0",
     "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.23.12",
 <<<<<<< HEAD
