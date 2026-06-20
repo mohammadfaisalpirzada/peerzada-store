@@ -1,35 +1,36 @@
+'use client';
+
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import Image from 'next/image';
-import { getCategories, CategoryInfo } from './explore/getCategories';
+import { useSession, signOut } from 'next-auth/react';
+import { CategoryInfo } from './explore/getCategories';
 
 const navLinks = [
   {
     href: '/products',
     label: 'All Products',
-    icon: <FaStore className="text-[#B80000] text-2xl font-bold" />,
+    icon: <FaStore className="text-[#B80000] text-lg" />,
   },
   {
     href: '/explore',
     label: 'Explore',
-    icon: <FaSearch className="text-[#007BFF] text-2xl font-bold" />,
-  },
-  {
-    href: '/blogs',
-    label: 'Blogs',
-    icon: <FaBlog className="text-[#28A745] text-2xl font-bold" />,
+    icon: <FaSearch className="text-[#007BFF] text-lg" />,
   },
 ];
 
 export default function Navbar() {
+  const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [allDropdownOpen, setAllDropdownOpen] = useState(false);
   const [submenuOpen, setSubmenuOpen] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false); // New state for mobile dropdown
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Add scroll event listener
   useEffect(() => {
@@ -46,11 +47,14 @@ export default function Navbar() {
     };
   }, [scrolled]);
 
-  // Fetch categories from Sanity
+  // Fetch categories via API route (server-side Sanity query avoids CORS issues)
   useEffect(() => {
-    getCategories().then((cats) => {
-      setCategories(cats.filter(cat => cat.value !== 'all'));
-    });
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then((cats) => {
+        setCategories(cats.filter((cat: CategoryInfo) => cat.value !== 'all'));
+      })
+      .catch(err => console.error('Failed to load categories:', err));
   }, []);
 
   // Prevent body scroll when menu is open
@@ -67,14 +71,26 @@ export default function Navbar() {
     };
   }, [menuOpen]);
 
+  // Close profile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    };
+    if (profileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileMenuOpen]);
+
   // Split categories
   const firstTwo = categories.slice(0, 2);
-  const rest = categories.slice(2);
 
   return (
     <nav className={`w-full fixed top-0 left-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-        <Link href="/" className={`text-2xl font-bold tracking-tight flex items-center gap-3 transition-colors duration-300 ${scrolled ? 'text-[#B80000]' : 'text-[#B80000]'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        <Link href="/" className={`font-bold tracking-tight flex items-center gap-2.5 transition-colors duration-300 ${scrolled ? 'text-[#B80000]' : 'text-[#B80000]'}`}>
           <motion.div
             whileHover={{ rotate: 5, scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -83,26 +99,26 @@ export default function Navbar() {
             <Image
               src="/images/logo.svg"
               alt="Peerzada Store Logo"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
               className="object-contain"
               priority
             />
           </motion.div>
           <div className="flex flex-col">
-            <span className="font-serif text-xl text-[#B80000]">Peerzada</span>
-            <span className="text-xs text-gray-500 font-normal -mt-1">Premium Store</span>
+            <span className="font-serif text-lg text-[#B80000] leading-tight">Peerzada</span>
+            <span className="text-[10px] text-gray-500 font-normal -mt-0.5">Premium Store</span>
           </div>
         </Link>
-        <div className="hidden md:flex gap-8 items-center">
+        <div className="hidden md:flex gap-4 items-center">
           {/* First two categories as direct links */}
           {firstTwo.map(cat => (
             <Link
               key={cat.value}
               href={`/products?category=${cat.value}`}
-              className={`flex items-center gap-2 transition-all duration-300 text-lg font-medium relative group ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
+              className={`flex items-center gap-1.5 transition-all duration-300 text-sm font-medium relative group ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
             >
-              <span className="text-[#B80000] text-2xl font-bold">
+              <span className="text-[#B80000] text-lg">
                 {cat.icon ? cat.icon : <FaStore />}
               </span>
               <span>{cat.name}</span>
@@ -116,13 +132,13 @@ export default function Navbar() {
               onMouseLeave={() => { setAllDropdownOpen(false); setSubmenuOpen(null); }}
             >
               <button 
-                className={`flex items-center gap-2 transition-all duration-300 text-lg font-medium relative group px-4 py-2 rounded-md ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
+                className={`flex items-center gap-1.5 transition-all duration-300 text-sm font-medium relative group px-2 py-1.5 rounded-md ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
                 onClick={() => setAllDropdownOpen(v => !v)}
                 type="button"
               >
-                <FaStore className="text-[#B80000] text-2xl font-bold" />
+                <FaStore className="text-[#B80000] text-lg" />
                 <span>All Categories</span>
-                <FaChevronDown className={`ml-1 text-xs transition-transform duration-200 ${allDropdownOpen ? 'rotate-180' : ''}`} />
+                <FaChevronDown className={`ml-0.5 text-[10px] transition-transform duration-200 ${allDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {allDropdownOpen && (
@@ -198,7 +214,7 @@ export default function Navbar() {
             <Link 
               key={link.href} 
               href={link.href} 
-              className={`flex items-center gap-2 transition-all duration-300 text-lg font-medium relative group ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
+              className={`flex items-center gap-1.5 transition-all duration-300 text-sm font-medium relative group ${scrolled ? 'text-gray-800 hover:text-[#B80000]' : 'text-gray-800 hover:text-[#B80000]'}`}
             >
               <motion.div
                 whileHover={{ scale: 1.2 }}
@@ -210,9 +226,87 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
+          
+          {/* Profile / Sign In */}
+          {status === 'authenticated' && session?.user ? (
+            <div className="relative" ref={profileMenuRef}>
+              <button
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+                className="flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-300 group"
+                type="button"
+              >
+                {session.user.image ? (
+                  <Image
+                    src={session.user.image}
+                    alt={session.user.name || 'User'}
+                    width={32}
+                    height={32}
+                    className="rounded-full object-cover"
+                  />
+                ) : (
+                  <FaUserCircle className="w-7 h-7 text-gray-600 group-hover:text-[#B80000] transition-colors" />
+                )}
+                <span className="text-sm font-semibold text-gray-800 group-hover:text-[#B80000] transition-colors hidden sm:inline">
+                  {session.user.name?.split(' ')[0] || 'Account'}
+                </span>
+                <FaChevronDown className={`text-xs text-gray-400 transition-transform duration-200 ${profileMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Profile Dropdown */}
+              <AnimatePresence>
+                {profileMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-[60]"
+                    style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}
+                  >
+                    {/* User Info */}
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{session.user.name || 'User'}</p>
+                      <p className="text-xs text-gray-500 truncate">{session.user.email || ''}</p>
+                    </div>
+
+                    {/* Menu Items */}
+                    <Link
+                      href="/profile"
+                      onClick={() => setProfileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-[#B80000]/5 hover:text-[#B80000] transition-colors"
+                    >
+                      <FaUser className="text-gray-400 w-4 h-4" />
+                      My Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setProfileMenuOpen(false);
+                        signOut({ callbackUrl: '/' });
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      type="button"
+                    >
+                      <FaSignOutAlt className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-[#B80000] to-red-600 text-white font-semibold rounded-xl text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              </svg>
+              Sign In
+            </Link>
+          )}
         </div>
         <motion.button
-          className={`md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 ${scrolled ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-gray-800'}`}
+          className={`md:hidden relative w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${scrolled ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-gray-800'}`}
           onClick={() => setMenuOpen(true)}
           aria-label="Open menu"
           whileHover={{ scale: 1.05 }}
@@ -356,6 +450,91 @@ export default function Navbar() {
                     </AnimatePresence>
                   </div>
                 
+                  {/* Sign In / User Profile Button (Mobile) */}
+                  {status === 'authenticated' && session?.user ? (
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1, type: 'spring', stiffness: 300, damping: 25 }}
+                    >
+                      <div className="p-4 rounded-2xl bg-gradient-to-r from-gray-50/80 to-white/60 border border-gray-200/50 shadow-sm mb-2">
+                        <div className="flex items-center gap-4 mb-3 pb-3 border-b border-gray-200/50">
+                          {session.user.image ? (
+                            <Image
+                              src={session.user.image}
+                              alt={session.user.name || 'User'}
+                              width={44}
+                              height={44}
+                              className="rounded-full object-cover"
+                            />
+                          ) : (
+                            <FaUserCircle className="w-11 h-11 text-gray-400" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-gray-900 font-semibold text-base truncate">{session.user.name || 'User'}</p>
+                            <p className="text-gray-500 text-sm truncate">{session.user.email || ''}</p>
+                          </div>
+                        </div>
+                        <Link
+                          href="/profile"
+                          onClick={() => setMenuOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-700 hover:bg-[#B80000]/5 hover:text-[#B80000] transition-colors mb-1"
+                        >
+                          <FaUser className="text-gray-400 w-4 h-4" />
+                          <span className="font-medium">My Profile</span>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                            signOut({ callbackUrl: '/' });
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors"
+                          type="button"
+                        >
+                          <FaSignOutAlt className="w-4 h-4" />
+                          <span className="font-medium">Sign Out</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        delay: 0.1,
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 25,
+                      }}
+                    >
+                      <Link
+                        href="/login"
+                        className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-[#B80000] to-red-600 text-white hover:from-red-700 hover:to-[#B80000] border border-[#B80000]/20 transition-all duration-300 shadow-md hover:shadow-lg"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm">
+                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                            </svg>
+                          </div>
+                          <div>
+                            <span className="text-white font-semibold text-lg">Sign In</span>
+                            <p className="text-white/70 text-sm">Access your account</p>
+                          </div>
+                        </div>
+                        <motion.div
+                          className="text-white/70 group-hover:text-white transition-colors"
+                          whileHover={{ x: 5 }}
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                          </svg>
+                        </motion.div>
+                      </Link>
+                    </motion.div>
+                  )}
+
                   {/* Other nav links */}
                   {navLinks.map((link, index) => (
                     <motion.div
@@ -387,7 +566,6 @@ export default function Navbar() {
                             <p className="text-gray-500 text-sm">
                               {link.label === 'Explore' && 'Discover new items'}
                               {link.label === 'All Products' && 'Browse our catalog'}
-                              {link.label === 'Blogs' && 'Latest articles'}
                             </p>
                           </div>
                         </div>

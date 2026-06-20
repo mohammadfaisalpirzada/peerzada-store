@@ -102,6 +102,30 @@ export async function getSubcategoriesForCategory(categoryValue: string) {
   );
 }
 
+// Search products by query
+export async function searchProducts(searchQuery: string) {
+  if (!searchQuery || searchQuery.trim() === '') return [];
+  return client.fetch(
+    `*[_type == "product" && (title match $search || description match $search || brand match $search)] | order(_createdAt desc) {
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      price,
+      image,
+      images,
+      "imageUrl": image.asset->url,
+      "imageUrls": images[].asset->url,
+      brand,
+      color,
+      "category": category->{title, "value": value.current, subcategories},
+      subcategory,
+      inStock
+    }`,
+    { search: `*${searchQuery}*` }
+  );
+}
+
 // Get a single product by slug
 export async function getProductBySlug(slug: string) {
   return client.fetch(

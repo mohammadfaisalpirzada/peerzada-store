@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PakistanFlag } from '../utils/flagUtils';
 
 interface ImageGalleryProps {
   images?: string[];
@@ -28,6 +29,7 @@ export default function ImageGallery({ images, imageUrl, title, className = "" }
     <div className={`space-y-4 ${className}`}>
       {/* Main Image Display */}
       <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+        <PakistanFlag />
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedImageIndex}

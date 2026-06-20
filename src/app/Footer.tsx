@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin, FaBook } from 'react-icons/fa';
 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
   { href: '/products', label: 'Products', icon: <FaStore /> },
   { href: '/wallets', label: 'Wallets', icon: <FaWallet /> },
   { href: '/blogs', label: 'Blogs', icon: <FaBlog /> },
+  { href: '/education', label: 'Education', icon: <FaBook /> },
 ];
 
 const socialLinks = [
@@ -22,7 +23,7 @@ export default function Footer() {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white mt-20 overflow-hidden"
+      className="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white overflow-hidden"
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
@@ -233,10 +234,10 @@ export default function Footer() {
             
             {/* Legal Links */}
             <div className="flex gap-6 text-sm text-gray-500">
-              <a href="#" className="hover:text-white transition-colors relative group">
+              <Link href="/privacy" className="hover:text-white transition-colors relative group">
                 <span>Privacy Policy</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
-              </a>
+              </Link>
               <a href="#" className="hover:text-white transition-colors relative group">
                 <span>Terms of Service</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>

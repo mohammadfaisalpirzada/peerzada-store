@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getProducts, getProductsByCategory, getProductsBySubcategory } from './getProducts';
+import { getProducts, getProductsByCategory, getProductsBySubcategory, searchProducts } from './getProducts';
 import { getSubcategories } from '../explore/getCategories'; // Import getSubcategories
 import ProductCard from './ProductCard';
 import { useSearchParams } from 'next/navigation';
@@ -17,6 +17,7 @@ function ProductsPageContent() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const subcategory = searchParams.get('subcategory');
+  const search = searchParams.get('search');
   const [pageTitle, setPageTitle] = useState('All Products');
 
   useEffect(() => {
@@ -25,7 +26,11 @@ function ProductsPageContent() {
       setError(null);
       try {
         let fetchedProducts;
-        if (category) {
+        if (search) {
+          fetchedProducts = await searchProducts(search);
+          setPageTitle(`Search: "${search}"`);
+          setSubcategories([]);
+        } else if (category) {
           const fetchedSubcategories = await getSubcategories(category);
           setSubcategories(fetchedSubcategories);
 
@@ -58,7 +63,7 @@ function ProductsPageContent() {
     }
     
     fetchData();
-  }, [category, subcategory]);
+  }, [category, subcategory, search]);
 
   if (loading) {
     return (

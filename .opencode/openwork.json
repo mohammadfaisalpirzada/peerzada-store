@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "workspace": {
+    "name": "peerzada-store",
+    "createdAt": 1781927897162,
+    "preset": "starter"
+  },
+  "authorizedRoots": [
+    "D:\\IT Course\\projects\\peerzada-store"
+  ],
+  "reload": null
+}
