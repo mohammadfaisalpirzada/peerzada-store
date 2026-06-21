@@ -238,12 +238,12 @@ export default function Footer() {
                 <span>Privacy Policy</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <a href="#" className="hover:text-white transition-colors relative group">
+              <Link href="/terms" className="hover:text-white transition-colors relative group">
                 <span>Terms of Service</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
-              </a>
-              <a href="#" className="hover:text-white transition-colors relative group">
-                <span>Shipping Info</span>
+              </Link>
+              <a href="https://wa.me/+923458340668" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors relative group">
+                <span>Contact Us</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
               </a>
             </div>

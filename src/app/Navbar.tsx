@@ -3,13 +3,10 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-<<<<<<< HEAD
-import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight } from 'react-icons/fa';
-=======
-import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
->>>>>>> b90f073 (login added)
+import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
+import { useCart } from '@/lib/cart-context';
 import { CategoryInfo } from './explore/getCategories';
 
 const navLinks = [
@@ -21,13 +18,33 @@ const navLinks = [
   {
     href: '/explore',
     label: 'Explore',
-<<<<<<< HEAD
-    icon: <FaSearch className="text-[#007BFF] text-2xl font-bold" />,
-=======
     icon: <FaSearch className="text-[#007BFF] text-lg" />,
->>>>>>> b90f073 (login added)
   },
 ];
+
+function CartIcon() {
+  const { itemCount } = useCart();
+  return (
+    <Link
+      href="/cart"
+      className="relative flex items-center gap-1.5 transition-all duration-300 text-sm font-medium text-gray-800 hover:text-[#B80000] group"
+    >
+      <motion.div
+        whileHover={{ scale: 1.2 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+        className="relative"
+      >
+        <FaShoppingCart className="text-lg" />
+        {itemCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-[#B80000] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            {itemCount > 9 ? '9+' : itemCount}
+          </span>
+        )}
+      </motion.div>
+      <span className="hidden sm:inline">Cart</span>
+    </Link>
+  );
+}
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -234,6 +251,9 @@ export default function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
+          
+          {/* Cart Icon */}
+          <CartIcon />
           
           {/* Profile / Sign In */}
           {status === 'authenticated' && session?.user ? (
@@ -542,6 +562,37 @@ export default function Navbar() {
                       </Link>
                     </motion.div>
                   )}
+
+                  {/* Cart link (mobile) */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.15, type: 'spring', stiffness: 300, damping: 25 }}
+                  >
+                    <Link
+                      href="/cart"
+                      className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-gray-50/80 to-white/60 hover:from-[#B80000]/10 hover:to-[#8B0000]/5 border border-gray-200/50 hover:border-[#B80000]/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-gray-100 to-gray-50 group-hover:from-[#B80000]/20 group-hover:to-[#8B0000]/10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm">
+                          <FaShoppingCart className="text-gray-600 group-hover:text-[#B80000] text-xl transition-colors" />
+                        </div>
+                        <div>
+                          <span className="text-gray-900 font-semibold text-lg group-hover:text-[#B80000] transition-colors">
+                            Cart
+                          </span>
+                          <p className="text-gray-500 text-sm">View your items</p>
+                        </div>
+                      </div>
+                      <motion.div
+                        className="text-gray-400 group-hover:text-[#B80000] transition-colors"
+                        whileHover={{ x: 5 }}
+                      >
+                        <FaChevronRight />
+                      </motion.div>
+                    </Link>
+                  </motion.div>
 
                   {/* Other nav links */}
                   {navLinks.map((link, index) => (

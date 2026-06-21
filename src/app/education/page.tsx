@@ -9,17 +9,10 @@ const EducationPage = () => {
           {/* Page Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-<<<<<<< HEAD
-              Master Sahub&apos;s Educational Hub
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Welcome to our educational platform. We&apos;re building something amazing for you.
-=======
               Master Sahub&rsquo;s Educational Hub
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Welcome to our educational platform. We&rsquo;re building something amazing for you.
->>>>>>> b90f073 (login added)
             </p>
           </div>
           

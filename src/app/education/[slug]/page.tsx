@@ -41,11 +41,7 @@ export default async function EducationalContentPage({ params }: { params: Promi
   }
 
   return (
-<<<<<<< HEAD
     <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 p-6 pt-24">
-=======
-    <main className="max-w-4xl mx-auto p-6 pt-22">
->>>>>>> b90f073 (login added)
       {/* Content Type and Subject Badges */}
       <div className="flex flex-wrap gap-2 mb-4 justify-center">
         <span className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full flex items-center">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -37,6 +37,14 @@ const scaleIn: Variants = {
 };
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#B80000]" /></div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
@@ -170,9 +178,46 @@ export default function LoginPage() {
         setLoading(false);
       }
     } else {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setLoading(false);
-      setStep('otp');
+      // Signup - call the register API to save user in Google Sheet
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            password: form.password,
+            phone: form.phone,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setError(data.error || 'Registration failed. Please try again.');
+          setLoading(false);
+          return;
+        }
+
+        // Registration successful - auto sign in
+        const signInResult = await signIn('credentials', {
+          email: form.email,
+          password: form.password,
+          redirect: false,
+          callbackUrl,
+        });
+
+        if (signInResult?.ok) {
+          setStep('success');
+          setTimeout(() => router.push(callbackUrl), 1500);
+        } else {
+          setError('Account created! Please sign in.');
+        }
+        setLoading(false);
+      } catch {
+        setError('Connection error. Please check your network.');
+        setLoading(false);
+      }
     }
   };
 
@@ -630,9 +675,9 @@ export default function LoginPage() {
                           />
                           <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer select-none">
                             I agree to the{' '}
-                            <Link href="#" className="text-[#B80000] hover:text-red-700 font-medium">Terms</Link>
+                            <Link href="/terms" className="text-[#B80000] hover:text-red-700 font-medium">Terms</Link>
                             {' '}and{' '}
-                            <Link href="#" className="text-[#B80000] hover:text-red-700 font-medium">Privacy Policy</Link>
+                            <Link href="/privacy" className="text-[#B80000] hover:text-red-700 font-medium">Privacy Policy</Link>
                           </label>
                         </motion.div>
                       )}
