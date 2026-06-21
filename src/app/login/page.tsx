@@ -1,6 +1,10 @@
 'use client';
 
+<<<<<<< HEAD
 import { Suspense, useState, useEffect, useRef } from 'react';
+=======
+import { useState, useEffect, useRef } from 'react';
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -37,6 +41,7 @@ const scaleIn: Variants = {
 };
 
 export default function LoginPage() {
+<<<<<<< HEAD
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#B80000]" /></div>}>
       <LoginForm />
@@ -45,6 +50,8 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
+=======
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
@@ -178,6 +185,7 @@ function LoginForm() {
         setLoading(false);
       }
     } else {
+<<<<<<< HEAD
       // Signup - call the register API to save user in Google Sheet
       try {
         const res = await fetch('/api/auth/register', {
@@ -218,6 +226,11 @@ function LoginForm() {
         setError('Connection error. Please check your network.');
         setLoading(false);
       }
+=======
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setLoading(false);
+      setStep('otp');
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
     }
   };
 
@@ -675,9 +688,15 @@ function LoginForm() {
                           />
                           <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer select-none">
                             I agree to the{' '}
+<<<<<<< HEAD
                             <Link href="/terms" className="text-[#B80000] hover:text-red-700 font-medium">Terms</Link>
                             {' '}and{' '}
                             <Link href="/privacy" className="text-[#B80000] hover:text-red-700 font-medium">Privacy Policy</Link>
+=======
+                            <Link href="#" className="text-[#B80000] hover:text-red-700 font-medium">Terms</Link>
+                            {' '}and{' '}
+                            <Link href="#" className="text-[#B80000] hover:text-red-700 font-medium">Privacy Policy</Link>
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
                           </label>
                         </motion.div>
                       )}

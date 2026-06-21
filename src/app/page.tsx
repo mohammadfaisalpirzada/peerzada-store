@@ -5,6 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
 interface Product {
   _id: string;
   title: string;

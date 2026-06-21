@@ -238,7 +238,11 @@ export default function Footer() {
                 <span>Privacy Policy</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
               </Link>
+<<<<<<< HEAD
               <Link href="/terms" className="hover:text-white transition-colors relative group">
+=======
+              <a href="#" className="hover:text-white transition-colors relative group">
+>>>>>>> b90f073074e47867f00f4d3160483e133d433369
                 <span>Terms of Service</span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
               </Link>
