@@ -4,7 +4,17 @@ import { useCart } from '@/lib/cart-context';
 import { urlFor } from '@/sanity/lib/image';
 import { FaShoppingCart, FaWhatsapp, FaCheck } from 'react-icons/fa';
 
-export default function OrderForm({ product }: { product: any }) {
+interface OrderFormProduct {
+  _id: string;
+  slug: string;
+  title: string;
+  price: number;
+  color?: string;
+  image?: { asset?: { _ref?: string } };
+  inStock?: boolean;
+}
+
+export default function OrderForm({ product }: { product: OrderFormProduct }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [name, setName] = useState('');
@@ -25,7 +35,7 @@ export default function OrderForm({ product }: { product: any }) {
 
   const handleOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Order Request:%0AProduct: ${product.title}%0AColor: ${product.color || 'N/A'}%0APrice: Rs. ${product.price}%0A---%0AName: ${name}%0AContact: ${contact}%0ADetails: ${details}`;
+    const message = `Product Inquiry:%0AProduct: ${product.title}%0AColor: ${product.color || 'N/A'}%0APrice: Rs. ${product.price}%0A---%0AName: ${name}%0AContact: ${contact}%0ADetails: ${details}`;
     window.open(`https://wa.me/+923458340668?text=${message}`, '_blank');
   };
 
@@ -52,7 +62,7 @@ export default function OrderForm({ product }: { product: any }) {
       <form onSubmit={handleOrder} className="flex flex-col gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
         <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
           <FaWhatsapp className="text-green-600" />
-          Order via WhatsApp
+          Query via WhatsApp
         </h2>
         <input
           type="text"
@@ -83,7 +93,7 @@ export default function OrderForm({ product }: { product: any }) {
           className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 text-sm"
         >
           <FaWhatsapp />
-          Send via WhatsApp
+          Send Query
         </button>
       </form>
     </div>

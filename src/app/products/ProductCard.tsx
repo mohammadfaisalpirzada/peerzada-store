@@ -5,12 +5,9 @@ import { urlFor } from '@/sanity/lib/image';
 import { Product } from './getProducts';
 import { useRouter } from 'next/navigation';
 import { PakistanFlag } from '../utils/flagUtils';
-<<<<<<< HEAD
 import { useCart } from '@/lib/cart-context';
 import { useState } from 'react';
 import { FaShoppingCart, FaWhatsapp } from 'react-icons/fa';
-=======
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
 
 interface ProductCardProps {
   product: Product;

@@ -3,8 +3,8 @@ import { google } from 'googleapis';
 const SHEET_ID = process.env.GOOGLE_SHEET_ID!;
 const USERS_RANGE = 'Users!A:G';
 const USERS_ALL_RANGE = 'Users!A2:G';
-const ORDERS_RANGE = 'Orders!A:I';
-const ORDERS_ALL_RANGE = 'Orders!A2:I';
+const ORDERS_RANGE = 'Orders!A:J';
+const ORDERS_ALL_RANGE = 'Orders!A2:J';
 
 function getAuth() {
   const key = (process.env.GOOGLE_SHEETS_PRIVATE_KEY || '').replace(/\\n/g, '\n');
@@ -141,6 +141,7 @@ export interface SheetOrder {
   address: string;
   status: string;
   createdAt: string;
+  transactionId?: string;
 }
 
 export async function insertOrder(order: {
@@ -150,6 +151,7 @@ export async function insertOrder(order: {
   totalAmount: number;
   phone: string;
   address: string;
+  transactionId?: string;
 }): Promise<SheetOrder> {
   const sheets = getSheets();
 
@@ -171,6 +173,7 @@ export async function insertOrder(order: {
     order.address,
     'pending',
     now,
+    order.transactionId || '',
   ];
 
   await sheets.spreadsheets.values.append({
@@ -190,6 +193,7 @@ export async function insertOrder(order: {
     address: order.address,
     status: 'pending',
     createdAt: now,
+    transactionId: order.transactionId,
   };
 }
 
@@ -212,6 +216,7 @@ export async function getOrdersByEmail(email: string): Promise<SheetOrder[]> {
       address: row[6] || '',
       status: row[7] || 'pending',
       createdAt: row[8],
+      transactionId: row[9] || '',
     }))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }

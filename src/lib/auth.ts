@@ -1,13 +1,9 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
-<<<<<<< HEAD
 import bcrypt from "bcryptjs"
 import type { NextAuthConfig } from "next-auth"
 import { findUserByEmail } from "@/lib/sheets"
-=======
-import type { NextAuthConfig } from "next-auth"
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
 
 // Auth configuration
 export const authConfig: NextAuthConfig = {
@@ -34,16 +30,13 @@ export const authConfig: NextAuthConfig = {
           return null
         }
 
-<<<<<<< HEAD
         try {
-          // Look up user in Google Sheet
           const user = await findUserByEmail(email)
 
           if (!user) {
             return null
           }
 
-          // Verify password against stored hash
           const valid = await bcrypt.compare(password, user.passwordHash)
 
           if (!valid) {
@@ -60,19 +53,6 @@ export const authConfig: NextAuthConfig = {
           console.error("Auth error:", error)
           return null
         }
-=======
-        // Demo login - replace with actual DB verification
-        if (email === "demo@peerzada.store" && password === "demo123") {
-          return {
-            id: "1",
-            name: "Demo User",
-            email: "demo@peerzada.store",
-            role: "customer",
-          }
-        }
-
-        return null
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
       },
     }),
   ],

@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from './ClientLayout';
 import SessionProvider from './SessionProvider';
-<<<<<<< HEAD
 import { CartProvider } from '@/lib/cart-context';
-=======
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
@@ -151,13 +148,9 @@ export default function RootLayout({
         className="antialiased"
       >
         <SessionProvider>
-<<<<<<< HEAD
           <CartProvider>
             <ClientLayout>{children}</ClientLayout>
           </CartProvider>
-=======
-          <ClientLayout>{children}</ClientLayout>
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
           <SpeedInsights />
         </SessionProvider>
       </body>

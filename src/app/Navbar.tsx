@@ -3,16 +3,10 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-<<<<<<< HEAD
 import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useCart } from '@/lib/cart-context';
-=======
-import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
-import Image from 'next/image';
-import { useSession, signOut } from 'next-auth/react';
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
 import { CategoryInfo } from './explore/getCategories';
 
 const navLinks = [
@@ -258,12 +252,9 @@ export default function Navbar() {
             </Link>
           ))}
           
-<<<<<<< HEAD
           {/* Cart Icon */}
           <CartIcon />
           
-=======
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
           {/* Profile / Sign In */}
           {status === 'authenticated' && session?.user ? (
             <div className="relative" ref={profileMenuRef}>
@@ -572,7 +563,6 @@ export default function Navbar() {
                     </motion.div>
                   )}
 
-<<<<<<< HEAD
                   {/* Cart link (mobile) */}
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -604,8 +594,6 @@ export default function Navbar() {
                     </Link>
                   </motion.div>
 
-=======
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
                   {/* Other nav links */}
                   {navLinks.map((link, index) => (
                     <motion.div

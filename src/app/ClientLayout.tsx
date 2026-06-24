@@ -7,10 +7,6 @@ import BlogFooter from './BlogFooter';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-<<<<<<< HEAD
-=======
-  
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
   // Define pages that should have commerce navbar and footer
   const shouldShowCommerceNavAndFooter = () => {
     // Show on landing page too (now an e-commerce landing page)

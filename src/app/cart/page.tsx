@@ -4,13 +4,13 @@ import { useCart } from '@/lib/cart-context';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaTrash, FaMinus, FaPlus, FaShoppingBag, FaArrowLeft, FaWhatsapp } from 'react-icons/fa';
+import { FaTrash, FaMinus, FaPlus, FaShoppingBag, FaArrowLeft } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalAmount, itemCount } = useCart();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const handleCheckout = () => {

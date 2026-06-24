@@ -124,11 +124,7 @@ export default function BlogFooter() {
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-1 text-gray-600 mb-4 md:mb-0">
-<<<<<<< HEAD
               <span>© 2026 Peerzada Blog. Made with</span>
-=======
-              <span>© 2024 Peerzada Blog. Made with</span>
->>>>>>> b90f073074e47867f00f4d3160483e133d433369
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1, repeat: Infinity, repeatDelay: 2 }}

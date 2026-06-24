@@ -7,7 +7,7 @@ import Link from 'next/link';
 export async function generateStaticParams() {
   try {
     const products = await getProducts();
-    return products.map((product: any) => ({ slug: String(product.slug) }));
+    return products.map((product: { slug: string }) => ({ slug: String(product.slug) }));
   } catch (error) {
     console.error('Error generating static params:', error);
     return [];
@@ -157,7 +157,7 @@ export default async function Page({ params }: PageProps) {
                     <span className="font-semibold">Subcategory:</span>
                     <span className="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded">{
                       product.category?.subcategories?.find(
-                        (subcat: any) => subcat.value === product.subcategory
+                        (subcat: { title: string; value: string; icon?: string; description?: string }) => subcat.value === product.subcategory
                       )?.title || product.subcategory
                     }</span>
                   </div>

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Please sign in to place an order.' }, { status: 401 });
     }
 
-    const { items, totalAmount, phone, address } = await request.json();
+    const { items, totalAmount, phone, address, transactionId } = await request.json();
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty.' }, { status: 400 });
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const order = await insertOrder({
       userEmail: session.user.email,
       customerName: session.user.name || 'Customer',
-      items: items.map((i: any) => ({
+      items: items.map((i: { productId: string; title: string; price: number; quantity: number }) => ({
         productId: i.productId,
         title: i.title,
         price: i.price,
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
       totalAmount,
       phone,
       address,
+      transactionId: transactionId || '',
     });
 
     return NextResponse.json({ success: true, order });

@@ -249,7 +249,7 @@ function SearchParamsWrapper() {
         // Set heading based on category param
         if (category) {
           // Try to find the category title from categoriesData
-          const catObj = (categoriesData ?? []).find((cat: any) => cat.value === category);
+          const catObj = (categoriesData ?? []).find((cat: { value: string }) => cat.value === category);
           setHeading(catObj ? catObj.name : category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()));
         } else {
           setHeading('All Categories');
@@ -266,11 +266,27 @@ function SearchParamsWrapper() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white py-12 pt-24">
+      <div className="min-h-screen bg-gray-50 py-12 pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#B80000] mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading...</p>
+          <div className="text-center mb-12">
+            <div className="h-10 w-64 skeleton mx-auto mb-3" />
+            <div className="h-5 w-48 skeleton mx-auto" />
+          </div>
+          <div className="mb-12 max-w-2xl mx-auto">
+            <div className="h-14 skeleton rounded-2xl" />
+          </div>
+          <div className="mb-16">
+            <div className="h-8 w-40 skeleton mb-6" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="h-80 skeleton rounded-xl" />
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-72 skeleton rounded-xl" />
+            ))}
           </div>
         </div>
       </div>

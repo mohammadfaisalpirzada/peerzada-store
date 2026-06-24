@@ -1,4 +1,5 @@
 import { client } from "../../sanity/lib/client";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export type Product = {
   _id: string;
@@ -6,10 +7,10 @@ export type Product = {
   slug: string;
   description: string;
   price: number;
-  image: any; // Legacy field
-  images?: any[]; // New multiple images field
-  imageUrl?: string; // Legacy field
-  imageUrls?: string[]; // New multiple image URLs
+  image: SanityImageSource;
+  images?: SanityImageSource[];
+  imageUrl?: string;
+  imageUrls?: string[];
   brand: string;
   color?: string;
   category: {
