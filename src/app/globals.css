@@ -78,7 +78,7 @@ button, a {
   text-align: left;
 }
 
-/* Line Clamping for Blog Cards */
+/* Line Clamping */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

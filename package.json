@@ -32,7 +32,6 @@
     "react-is": "^19.1.1",
     "sanity": "^4.3.0",
     "styled-components": "^6.1.19",
-    "vercel": "^54.14.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -41,10 +40,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vercel/next": "^4.20.1",
     "eslint": "^9",
     "eslint-config-next": "^15.4.11",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^54.14.2"
   },
   "optionalDependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.3.1",

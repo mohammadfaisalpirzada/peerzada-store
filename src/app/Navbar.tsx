@@ -48,6 +48,7 @@ function CartIcon() {
 
 export default function Navbar() {
   const { data: session, status } = useSession();
+  const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
@@ -333,20 +334,34 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <motion.button
-          className={`md:hidden relative w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${scrolled ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-gray-800'}`}
-          onClick={() => setMenuOpen(true)}
-          aria-label="Open menu"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <motion.div
-            animate={{ rotate: menuOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Cart Icon with count */}
+          <Link
+            href="/cart"
+            className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${scrolled ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-gray-800'}`}
           >
-            <FaBars className="text-lg" />
-          </motion.div>
-        </motion.button>
+            <FaShoppingCart className="text-lg" />
+            {itemCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-[#B80000] text-white text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] px-1 rounded-full flex items-center justify-center shadow-md">
+                {itemCount > 99 ? '99+' : itemCount}
+              </span>
+            )}
+          </Link>
+          <motion.button
+            className={`relative w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${scrolled ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' : 'bg-white/20 backdrop-blur-sm hover:bg-white/30 text-gray-800'}`}
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div
+              animate={{ rotate: menuOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FaBars className="text-lg" />
+            </motion.div>
+          </motion.button>
+        </div>
       </div>
 
       <AnimatePresence>

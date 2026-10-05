@@ -97,6 +97,11 @@ export default function CartPage() {
                     {item.title}
                   </h3>
                 </Link>
+                {item.customDetails && (
+                  <p className="text-xs text-amber-700 bg-amber-50 rounded px-2 py-1 mt-1 inline-block">
+                    {item.customDetails}
+                  </p>
+                )}
                 <p className="text-[#B80000] font-bold mt-1">Rs. {item.price.toLocaleString()}</p>
               </div>
 

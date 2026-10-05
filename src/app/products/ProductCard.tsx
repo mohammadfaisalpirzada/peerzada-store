@@ -8,6 +8,8 @@ import { PakistanFlag } from '../utils/flagUtils';
 import { useCart } from '@/lib/cart-context';
 import { useState } from 'react';
 import { FaShoppingCart, FaWhatsapp } from 'react-icons/fa';
+import { useSession } from 'next-auth/react';
+import CartToast from '../components/CartToast';
 
 interface ProductCardProps {
   product: Product;
@@ -15,20 +17,29 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter();
-  const { addItem } = useCart();
+  const { addItem, addPendingItem } = useCart();
+  const { status } = useSession();
   const [added, setAdded] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    addItem({
+    const item = {
       productId: product._id,
       slug: product.slug,
       title: product.title,
       price: product.price,
       image: product.image ? urlFor(product.image).url() : '',
-    });
+    };
+    if (status === 'unauthenticated') {
+      addPendingItem(item);
+      router.push(`/login?callbackUrl=/products/${product.slug}`);
+      return;
+    }
+    addItem(item);
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    setShowToast(true);
+    setTimeout(() => { setAdded(false); setShowToast(false); }, 2000);
   };
 
   const handleWhatsAppOrder = (e: React.MouseEvent) => {
@@ -116,6 +127,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </button>
         </div>
       </div>
+      <CartToast show={showToast} onClose={() => setShowToast(false)} itemTitle={product.title} />
     </div>
   );
 }

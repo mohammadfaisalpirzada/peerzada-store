@@ -98,6 +98,8 @@ export default function CheckoutPage() {
             title: i.title,
             price: i.price,
             quantity: i.quantity,
+            image: i.image || '',
+            customDetails: i.customDetails || '',
           })),
           totalAmount,
           phone: form.phone,
@@ -216,6 +218,9 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900">{item.title}</p>
+                        {item.customDetails && (
+                          <p className="text-xs text-amber-700 mt-0.5">{item.customDetails}</p>
+                        )}
                         <p className="text-xs text-gray-400">Qty: {item.quantity} x Rs. {item.price.toLocaleString()}</p>
                         <p className="text-sm font-semibold text-[#B80000]">Rs. {(item.price * item.quantity).toLocaleString()}</p>
                       </div>
@@ -405,6 +410,9 @@ export default function CheckoutPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate">{item.title}</p>
+                            {item.customDetails && (
+                              <p className="text-xs text-amber-700 truncate">{item.customDetails}</p>
+                            )}
                             <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
                             <p className="text-sm font-semibold text-[#B80000]">Rs. {(item.price * item.quantity).toLocaleString()}</p>
                           </div>

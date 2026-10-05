@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaStore, FaWallet, FaBlog, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin, FaBook } from 'react-icons/fa';
+import { FaStore, FaSearch, FaHeart, FaPhone, FaEnvelope, FaTwitter, FaFacebook, FaInstagram, FaLinkedin, FaBook } from 'react-icons/fa';
 
 const navLinks = [
   { href: '/explore', label: 'Explore', icon: <FaSearch /> },
   { href: '/products', label: 'Products', icon: <FaStore /> },
-  { href: '/wallets', label: 'Wallets', icon: <FaWallet /> },
-  { href: '/blogs', label: 'Blogs', icon: <FaBlog /> },
   { href: '/education', label: 'Education', icon: <FaBook /> },
 ];
 

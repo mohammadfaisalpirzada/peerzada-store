@@ -13,8 +13,37 @@ type BaileysWebhookBody = {
   };
 };
 
+function isAuthorized(request: NextRequest): boolean {
+  const secret =
+    process.env.BAILEYS_WEBHOOK_SECRET ||
+    process.env.WEBHOOK_SECRET ||
+    process.env.CRON_SECRET;
+
+  if (secret) {
+    const authHeader = request.headers.get('authorization');
+    const webhookHeader = request.headers.get('x-webhook-secret');
+    const querySecret = request.nextUrl.searchParams.get('secret');
+
+    return (
+      authHeader === `Bearer ${secret}` ||
+      webhookHeader === secret ||
+      querySecret === secret
+    );
+  }
+
+  // In production, require secret configuration
+  return process.env.NODE_ENV !== 'production';
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (!isAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized webhook request.' },
+        { status: 401 }
+      );
+    }
+
     const body = (await request.json()) as BaileysWebhookBody;
     const imageUrl = body?.payload?.url?.trim();
     const caption = body?.payload?.caption?.trim() || '';
@@ -48,7 +77,6 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unexpected webhook error';
-
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

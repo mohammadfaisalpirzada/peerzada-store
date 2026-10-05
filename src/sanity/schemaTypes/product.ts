@@ -1,5 +1,6 @@
 import { SchemaTypeDefinition } from 'sanity';
 import { SubcategoryInput } from '../components/SubcategoryInput';
+import { MultiImageUpload } from '../components/MultiImageUpload';
 
 const productSchema: SchemaTypeDefinition = {
   name: 'product',
@@ -35,7 +36,9 @@ const productSchema: SchemaTypeDefinition = {
       of: [
         {
           type: 'image',
-          options: { hotspot: true },
+          options: { 
+            hotspot: true,
+          },
           fields: [
             {
               name: 'alt',
@@ -49,7 +52,10 @@ const productSchema: SchemaTypeDefinition = {
       options: {
         layout: 'grid'
       },
-      validation: Rule => Rule.max(4).error('Maximum 4 images allowed')
+      components: {
+        input: MultiImageUpload
+      },
+      validation: Rule => Rule.max(5).error('Maximum 5 images allowed (Sanity free plan limit)')
     },
     // Keep the old image field for backward compatibility
     { 

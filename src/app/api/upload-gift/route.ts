@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createProductFromWhatsAppItem } from '@/lib/whatsappSanityAutomation';
+import { validateSession } from '@/lib/admin';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -14,8 +15,41 @@ type UploadGiftPayload = {
   groupName?: string;
 };
 
+function isAuthorized(request: NextRequest): boolean {
+  // Check API key / Bearer token
+  const authHeader = request.headers.get('authorization');
+  const apiKeyHeader = request.headers.get('x-api-key');
+  const secretKey =
+    process.env.ADMIN_API_KEY ||
+    process.env.CRON_SECRET ||
+    process.env.WHATSAPP_SYNC_TOKEN ||
+    process.env.AUTH_SECRET;
+
+  if (secretKey) {
+    if (apiKeyHeader === secretKey || authHeader === `Bearer ${secretKey}`) {
+      return true;
+    }
+  }
+
+  // Check admin session cookie
+  const adminToken = request.cookies.get('admin_token')?.value;
+  if (adminToken) {
+    const session = validateSession(adminToken);
+    if (session.valid) return true;
+  }
+
+  return false;
+}
+
 export async function POST(request: NextRequest) {
   try {
+    if (!isAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Admin authentication or valid API key required.' },
+        { status: 401 }
+      );
+    }
+
     const body = (await request.json()) as UploadGiftPayload;
 
     if (!body.imageUrl?.trim()) {
@@ -47,13 +81,6 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unexpected server error';
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: message,
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

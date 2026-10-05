@@ -220,3 +220,46 @@ export async function getOrdersByEmail(email: string): Promise<SheetOrder[]> {
     }))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
+
+export async function getAllOrders(): Promise<SheetOrder[]> {
+  const sheets = getSheets();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: ORDERS_ALL_RANGE,
+  });
+  const rows = res.data.values || [];
+  return rows
+    .map(row => ({
+      orderId: row[0],
+      userEmail: row[1],
+      customerName: row[2],
+      itemsJson: row[3],
+      totalAmount: row[4],
+      phone: row[5] || '',
+      address: row[6] || '',
+      status: row[7] || 'pending',
+      createdAt: row[8],
+      transactionId: row[9] || '',
+    }))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
+export async function updateOrderStatus(orderId: string, status: string): Promise<boolean> {
+  const sheets = getSheets();
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: ORDERS_ALL_RANGE,
+  });
+  const rows = res.data.values || [];
+  const rowIndex = rows.findIndex(row => row[0] === orderId);
+  if (rowIndex === -1) return false;
+
+  const sheetRowNumber = rowIndex + 2; // +2 because header row + 0-indexed
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SHEET_ID,
+    range: `Orders!H${sheetRowNumber}`,
+    valueInputOption: 'USER_ENTERED',
+    requestBody: { values: [[status]] },
+  });
+  return true;
+}
