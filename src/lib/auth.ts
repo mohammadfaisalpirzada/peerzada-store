@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import type { NextAuthConfig } from "next-auth"
 import { findUserByEmail } from "@/lib/sheets"
+import { isAdminEmail } from "@/lib/adminAuth"
 
 // Auth configuration
 export const authConfig: NextAuthConfig = {
@@ -43,11 +44,13 @@ export const authConfig: NextAuthConfig = {
             return null
           }
 
+          const isUserAdmin = isAdminEmail(user.email) || user.role === "admin"
+
           return {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role || "customer",
+            role: isUserAdmin ? "admin" : (user.role || "customer"),
           }
         } catch (error) {
           console.error("Auth error:", error)
@@ -69,12 +72,17 @@ export const authConfig: NextAuthConfig = {
           ;(token as any).role = (user as any).role
         }
       }
+      if (isAdminEmail(token.email as string)) {
+        ;(token as any).role = "admin"
+      }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         ;(session.user as any).id = token.id
-        ;(session.user as any).role = (token as any).role || "customer"
+        const isSuperAdmin = isAdminEmail(session.user.email) || (token as any).role === "admin"
+        ;(session.user as any).role = isSuperAdmin ? "admin" : ((token as any).role || "customer")
+        ;(session.user as any).isAdmin = isSuperAdmin
       }
       return session
     },

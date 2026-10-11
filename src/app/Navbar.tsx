@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle, FaShoppingCart } from 'react-icons/fa';
+import { FaStore, FaSearch, FaBars, FaTimes, FaChevronDown, FaChevronRight, FaUser, FaSignOutAlt, FaUserCircle, FaShoppingCart, FaTools } from 'react-icons/fa';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useCart } from '@/lib/cart-context';
 import { CategoryInfo } from './explore/getCategories';
+import { isAdminEmail } from '@/lib/adminAuth';
 
 const navLinks = [
   {
@@ -294,11 +295,28 @@ export default function Navbar() {
                   >
                     {/* User Info */}
                     <div className="px-4 py-3 border-b border-gray-100">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{session.user.name || 'User'}</p>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{session.user.name || 'User'}</p>
+                        {(isAdminEmail(session.user.email) || (session.user as any)?.role === 'admin') && (
+                          <span className="text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-red-100 text-[#B80000]">
+                            Admin
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-500 truncate">{session.user.email || ''}</p>
                     </div>
 
                     {/* Menu Items */}
+                    {(isAdminEmail(session.user.email) || (session.user as any)?.role === 'admin') && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setProfileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[#B80000] hover:bg-[#B80000]/10 transition-colors"
+                      >
+                        <FaTools className="text-[#B80000] w-4 h-4" />
+                        Admin Dashboard
+                      </Link>
+                    )}
                     <Link
                       href="/profile"
                       onClick={() => setProfileMenuOpen(false)}
@@ -514,10 +532,27 @@ export default function Navbar() {
                             <FaUserCircle className="w-11 h-11 text-gray-400" />
                           )}
                           <div className="flex-1 min-w-0">
-                            <p className="text-gray-900 font-semibold text-base truncate">{session.user.name || 'User'}</p>
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="text-gray-900 font-semibold text-base truncate">{session.user.name || 'User'}</p>
+                              {(isAdminEmail(session.user.email) || (session.user as any)?.role === 'admin') && (
+                                <span className="text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-red-100 text-[#B80000]">
+                                  Admin
+                                </span>
+                              )}
+                            </div>
                             <p className="text-gray-500 text-sm truncate">{session.user.email || ''}</p>
                           </div>
                         </div>
+                        {(isAdminEmail(session.user.email) || (session.user as any)?.role === 'admin') && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-[#B80000] font-semibold hover:bg-[#B80000]/10 transition-colors mb-1"
+                          >
+                            <FaTools className="text-[#B80000] w-4 h-4" />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        )}
                         <Link
                           href="/profile"
                           onClick={() => setMenuOpen(false)}

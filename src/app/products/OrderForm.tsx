@@ -7,13 +7,17 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import CartToast from '../components/CartToast';
 
+import { getProductImageUrl, getProductPageUrl } from '@/lib/shareUtils';
+
 interface OrderFormProduct {
   _id: string;
   slug: string;
   title: string;
   price: number;
   color?: string;
-  image?: { asset?: { _ref?: string } };
+  image?: any;
+  imageUrl?: string;
+  imageUrls?: string[];
   inStock?: boolean;
 }
 
@@ -38,7 +42,7 @@ export default function OrderForm({ product }: { product: OrderFormProduct }) {
       slug: product.slug,
       title: product.title,
       price: product.price,
-      image: product.image ? urlFor(product.image).url() : '',
+      image: product.image ? urlFor(product.image).url() : (product.imageUrl || ''),
       customDetails: customDetails || undefined,
     };
     if (status === 'unauthenticated') {
@@ -54,7 +58,33 @@ export default function OrderForm({ product }: { product: OrderFormProduct }) {
 
   const handleOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = `Product Inquiry:%0AProduct: ${product.title}%0AColor: ${product.color || 'N/A'}%0APrice: Rs. ${product.price}%0A---%0AName: ${name}%0AContact: ${contact}%0ADetails: ${details}%0ACustomization: ${customDetails || 'N/A'}`;
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://peerzada.store';
+    const productUrl = getProductPageUrl(product, origin);
+    const imageUrl = getProductImageUrl(product, origin);
+
+    const messageLines = [
+      `*Assalam-o-Alaikum!* 🌟`,
+      `*Product Inquiry & Order Request:*`,
+      ``,
+      `📦 *Product:* ${product.title}`,
+      `💰 *Price:* PKR ${product.price.toLocaleString()}`,
+      product.color ? `🎨 *Color:* ${product.color}` : null,
+      ``,
+      `🔗 *Product Link:*`,
+      productUrl,
+      ``,
+      `🖼️ *Product Picture:*`,
+      imageUrl,
+      ``,
+      `👤 *Customer Name:* ${name || 'N/A'}`,
+      `📞 *Customer Contact:* ${contact || 'N/A'}`,
+      details ? `💬 *Query Details:* ${details}` : null,
+      customDetails ? `✏️ *Customization:* ${customDetails}` : null,
+      ``,
+      `Please confirm availability and order details. Thank you!`,
+    ].filter((line) => line !== null);
+
+    const message = encodeURIComponent(messageLines.join('\n'));
     window.open(`https://wa.me/+923458340668?text=${message}`, '_blank');
   };
 

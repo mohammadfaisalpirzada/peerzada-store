@@ -1,6 +1,7 @@
 import { getProductBySlug, getProducts } from '../getProducts';
 import OrderForm from '../OrderForm';
 import ImageGallery from '../../components/ImageGallery';
+import ProductDetailAdminBar from './ProductDetailAdminBar';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -135,11 +136,26 @@ export default async function Page({ params }: PageProps) {
                 imageUrl={product.imageUrl}
                 title={product.title}
                 className="w-full"
+                product={product}
               />
             </div>
 
             {/* Product Details */}
             <div className="space-y-6">
+              {/* Admin Bar */}
+              <ProductDetailAdminBar
+                product={{
+                  _id: product._id,
+                  title: product.title,
+                  price: product.price,
+                  description: product.description,
+                  imageUrl: product.imageUrls?.[0] || product.imageUrl,
+                  inStock: product.inStock,
+                  brand: product.brand,
+                  color: product.color,
+                }}
+              />
+
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.title}</h1>
                 <p className="text-gray-600">{product.description}</p>

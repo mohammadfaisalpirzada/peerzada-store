@@ -6,5 +6,5 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === 'production', // CDN only in production
+  useCdn: false, // Set to false so changes in Sanity reflect immediately on the website
 })

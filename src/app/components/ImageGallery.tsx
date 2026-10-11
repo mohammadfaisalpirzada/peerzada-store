@@ -4,17 +4,26 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PakistanFlag } from '../utils/flagUtils';
+import ProductShareButton from './ProductShareButton';
+import { ShareableProduct } from '@/lib/shareUtils';
 
 interface ImageGalleryProps {
   images?: string[];
   imageUrl?: string; // Legacy fallback
   title: string;
   className?: string;
+  product?: ShareableProduct;
 }
 
-export default function ImageGallery({ images, imageUrl, title, className = "" }: ImageGalleryProps) {
+export default function ImageGallery({
+  images,
+  imageUrl,
+  title,
+  className = '',
+  product,
+}: ImageGalleryProps) {
   // Use new images array if available, otherwise fallback to legacy imageUrl
-  const allImages = images && images.length > 0 ? images.filter(Boolean) : (imageUrl ? [imageUrl] : []);
+  const allImages = images && images.length > 0 ? images.filter(Boolean) : imageUrl ? [imageUrl] : [];
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   if (allImages.length === 0) {
@@ -25,11 +34,24 @@ export default function ImageGallery({ images, imageUrl, title, className = "" }
     );
   }
 
+  const shareProductData: ShareableProduct = product || {
+    title,
+    imageUrl: allImages[selectedImageIndex] || allImages[0],
+    imageUrls: allImages,
+    price: 0,
+  };
+
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Main Image Display */}
       <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
         <PakistanFlag />
+
+        {/* 1-Click Transparent Round Share Button on Left Bottom of Image */}
+        <div className="absolute bottom-3 left-3 z-20">
+          <ProductShareButton product={shareProductData} />
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedImageIndex}
@@ -57,24 +79,24 @@ export default function ImageGallery({ images, imageUrl, title, className = "" }
       {/* Thumbnail Navigation - Only show if multiple images */}
       {allImages.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {allImages.map((imageUrl, index) => (
+          {allImages.map((imgUrl, index) => (
             <button
               key={index}
               onClick={() => setSelectedImageIndex(index)}
               className={`relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all duration-200 ${
-                selectedImageIndex === index 
-                  ? 'border-[#B80000] ring-2 ring-[#B80000]/20' 
+                selectedImageIndex === index
+                  ? 'border-[#B80000] ring-2 ring-[#B80000]/20'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <Image
-                src={imageUrl}
+                src={imgUrl}
                 alt={`${title} - Thumbnail ${index + 1}`}
                 fill
                 sizes="64px"
                 className="object-cover"
                 onError={() => {
-                  console.error('Thumbnail failed to load:', imageUrl);
+                  console.error('Thumbnail failed to load:', imgUrl);
                 }}
               />
             </button>

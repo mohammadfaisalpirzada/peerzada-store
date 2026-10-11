@@ -1,9 +1,18 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { validateSession, destroySession } from '@/lib/admin';
+import { auth } from '@/lib/auth';
+import { isAdminEmail } from '@/lib/adminAuth';
 
 export async function GET() {
   try {
+    // 1. Check NextAuth session for admin email (e.g., muhammadfaisalpeerzada@gmail.com)
+    const session = await auth();
+    if (session?.user?.email && isAdminEmail(session.user.email)) {
+      return NextResponse.json({ valid: true, email: session.user.email });
+    }
+
+    // 2. Check admin phone OTP cookie session
     const cookieStore = await cookies();
     const token = cookieStore.get('admin_token')?.value;
     if (!token) {
@@ -13,7 +22,7 @@ export async function GET() {
     if (!result.valid) {
       return NextResponse.json({ valid: false }, { status: 401 });
     }
-    return NextResponse.json({ valid: true });
+    return NextResponse.json({ valid: true, phone: result.phone });
   } catch {
     return NextResponse.json({ valid: false }, { status: 401 });
   }
