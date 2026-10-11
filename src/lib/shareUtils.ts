@@ -64,8 +64,49 @@ export function getCategoryTitle(product: ShareableProduct): string {
 }
 
 /**
- * Generates the rich WhatsApp message and wa.me link for customer queries
- * Contains: Product Title, Price, Status, Direct Product Link, and Direct Picture Link
+ * Downloads image as a binary File object using our local proxy to bypass CORS
+ */
+export async function fetchProductImageFile(imageUrl: string, title: string): Promise<File | null> {
+  try {
+    const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(imageUrl)}`;
+    const res = await fetch(proxyUrl);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    const mimeType = blob.type || 'image/jpeg';
+    const ext = mimeType.includes('png') ? 'png' : mimeType.includes('webp') ? 'webp' : 'jpg';
+    const cleanName = title.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) || 'peerzada_product';
+    return new File([blob], `${cleanName}.${ext}`, { type: mimeType });
+  } catch (err) {
+    console.error('Failed to convert product image to file:', err);
+    return null;
+  }
+}
+
+/**
+ * Downloads image directly to device storage
+ */
+export async function downloadProductImage(imageUrl: string, title: string): Promise<boolean> {
+  try {
+    const file = await fetchProductImageFile(imageUrl, title);
+    if (!file) return false;
+    const blobUrl = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    return true;
+  } catch (err) {
+    console.error('Download image error:', err);
+    return false;
+  }
+}
+
+/**
+ * Generates the clean WhatsApp message link for customer queries
+ * Designed so WhatsApp automatically generates rich card preview with the product picture
  */
 export function getWhatsAppQueryUrl(
   product: ShareableProduct,
@@ -74,7 +115,6 @@ export function getWhatsAppQueryUrl(
 ): string {
   const origin = clientOrigin || (typeof window !== 'undefined' ? window.location.origin : DEFAULT_ORIGIN);
   const productUrl = getProductPageUrl(product, origin);
-  const imageUrl = getProductImageUrl(product, origin);
   const categoryTitle = getCategoryTitle(product);
   const stockText = product.inStock === false ? '❌ Out of Stock' : '✅ In Stock';
 
@@ -87,15 +127,10 @@ export function getWhatsAppQueryUrl(
     categoryTitle ? `🏷️ *Category:* ${categoryTitle}` : null,
     product.color ? `🎨 *Color:* ${product.color}` : null,
     `📌 *Status:* ${stockText}`,
+    customDetails ? `\n📝 *Customization / Details:*\n${customDetails}` : null,
     ``,
     `🔗 *Product Link:*`,
     productUrl,
-    ``,
-    `🖼️ *Product Picture:*`,
-    imageUrl,
-    ``,
-    customDetails ? `📝 *Customization / Query Details:*\n${customDetails}\n` : null,
-    `Please share more details. Thank you!`,
   ].filter((line) => line !== null);
 
   const message = lines.join('\n');
@@ -103,7 +138,7 @@ export function getWhatsAppQueryUrl(
 }
 
 /**
- * Generates share data for 1-click sharing
+ * Generates clean text for 1-click sharing (without ugly raw CDN links)
  */
 export function getProductShareData(product: ShareableProduct, clientOrigin?: string) {
   const origin = clientOrigin || (typeof window !== 'undefined' ? window.location.origin : DEFAULT_ORIGIN);
@@ -117,10 +152,11 @@ export function getProductShareData(product: ShareableProduct, clientOrigin?: st
   const shareText = [
     `🛍️ *${product.title}*`,
     `💰 PKR ${product.price.toLocaleString()}`,
-    cleanDescription ? `\n${cleanDescription}...` : '',
-    `\n🖼️ Picture: ${imageUrl}`,
-    `\n🔗 View Details: ${productUrl}`,
-  ].join('\n');
+    cleanDescription ? `${cleanDescription}...` : '',
+    `🔗 ${productUrl}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   return {
     title: `${product.title} | Peerzada Store`,
