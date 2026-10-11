@@ -135,26 +135,26 @@ export default function Home() {
             >
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 bg-[#B80000]/10 rounded-full text-[#B80000] text-sm font-medium mb-6">
                 <span className="w-2 h-2 bg-[#B80000] rounded-full animate-pulse" />
-                Premium Quality Products
+                #1 Online Store in Karachi &amp; Pakistan
               </motion.div>
 
               <motion.h1
                 variants={fadeInUp}
                 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-6"
               >
-                Discover{' '}
+                Customised{' '}
                 <span className="bg-gradient-to-r from-[#B80000] to-red-600 bg-clip-text text-transparent">
-                  Premium
+                  Gifts &amp; Wallets
                 </span>{' '}
-                Wallets &amp; Accessories
+                Online in Karachi, PK
               </motion.h1>
 
               <motion.p
                 variants={fadeInUp}
                 className="text-base sm:text-lg text-gray-600 max-w-xl mb-8 leading-relaxed text-justify sm:text-center lg:text-center"
               >
-                Shop the finest collection of wallets, accessories, and customized gifts. 
-                Quality craftsmanship delivered to your doorstep across Pakistan.
+                Shop personalized leather wallets, engraved gift sets, keychains, and luxury accessories online. 
+                Fast Cash on Delivery across Karachi &amp; nationwide Pakistan (PK).
               </motion.p>
 
               <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -538,6 +538,61 @@ export default function Home() {
               </Link>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ========== SEO & FAQ SECTION FOR KARACHI / PAKISTAN RANKING ========== */}
+      <section className="py-16 bg-white border-t border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-[#B80000] font-semibold text-xs sm:text-sm uppercase tracking-widest">
+              Karachi &amp; Nationwide Pakistan Online Shopping
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-2 mb-4">
+              Premium Customised Gifts &amp; Wallets in Karachi, Pakistan
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
+              Peerzada Store is your trusted destination for personalised gifts, customized leather wallets, engraved keychain combos, and luxury accessories with Cash on Delivery (COD) across Karachi and all Pakistan cities.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <span className="text-[#B80000]">📍</span> Online Delivery Across Karachi &amp; PK
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                We deliver right to your doorstep in Karachi (Gulshan, Clifton, DHA, North Nazimabad, Malir, Korangi, Saddar) and all cities across Pakistan (Lahore, Islamabad, Rawalpindi, Faisalabad, Multan, Peshawar, Quetta).
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <span className="text-[#B80000]">✨</span> Custom Name &amp; Photo Engraving
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Make your gifts truly special! We customize leather wallets, keychains, and gift bundles with personalized name engravings and photo customizations for birthdays, anniversaries, and corporate events.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <span className="text-[#B80000]">💵</span> Cash on Delivery (COD) &amp; Safe Payment
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Enjoy 100% peace of mind with Cash on Delivery (COD) nationwide, or pay conveniently via Bank Transfer, EasyPaisa, and JazzCash.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
+                <span className="text-[#B80000]">⚡</span> 1-Click WhatsApp Inquiry &amp; Fast Support
+              </h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Have a question or custom design request? Click the WhatsApp query button on any product to send the exact item photo and details directly to our customer support team for instant assistance.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 

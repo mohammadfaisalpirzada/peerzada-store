@@ -83,8 +83,7 @@ export default function Footer() {
               </Link>
               
               <p className="text-gray-400 mb-6 max-w-md leading-relaxed">
-                Discover premium quality products crafted for your everyday needs. 
-                Experience excellence in every purchase.
+                Discover customised gifts, premium leather wallets, and accessories in Karachi, Pakistan. Fast delivery nationwide with Cash on Delivery (COD).
               </p>
               
               {/* Social Links */}
@@ -184,6 +183,13 @@ export default function Footer() {
                 </div>
                 <span className="text-sm">info@peerzada.store</span>
               </motion.a>
+
+              <div className="flex items-center gap-3 text-gray-400">
+                <div className="w-8 h-8 rounded-lg bg-[#B80000]/20 flex items-center justify-center">
+                  <span className="text-sm">📍</span>
+                </div>
+                <span className="text-sm">Karachi, Pakistan (PK)</span>
+              </div>
             </div>
           </motion.div>
         </div>

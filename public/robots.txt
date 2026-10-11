@@ -1,25 +1,29 @@
 User-agent: *
 Allow: /
-
-# Sitemap location (most important)
-Sitemap: https://peerzada.store/sitemap.xml
-
-# Disallow admin and API areas
 Disallow: /studio/
 Disallow: /api/
-Disallow: /_next/
 Disallow: /admin/
 Disallow: /.well-known/
 
-# Allow important pages explicitly
+# Explicitly allow key pages and public assets
 Allow: /products/
 Allow: /explore/
-Allow: /blogs/
 Allow: /wallets/
+Allow: /images/
 
-# Crawl delay for better server performance
-Crawl-delay: 1
+# Googlebot specific rules for fastest crawl
+User-agent: Googlebot
+Allow: /
+Disallow: /studio/
+Disallow: /api/
+Disallow: /admin/
 
-# Additional sitemaps (if you add them later)
-# Sitemap: https://peerzada.store/product-sitemap.xml
-# Sitemap: https://peerzada.store/blog-sitemap.xml
+# Bingbot specific rules
+User-agent: Bingbot
+Allow: /
+Disallow: /studio/
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://peerzada.store/sitemap.xml

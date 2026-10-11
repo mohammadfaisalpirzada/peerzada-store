@@ -1,19 +1,28 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Peerzada Store | Best Wallets & Accessories",
-  description: "Discover the best wallets and accessories. Shop with confidence and style at Peerzada Store.",
+  title: "Peerzada Store | Customised Gifts, Wallets & Online Shopping Karachi, Pakistan (PK)",
+  description: "Discover premium customised gifts, customized leather wallets, keychain combos, and luxury accessories online in Karachi & across Pakistan (PK). Cash on Delivery, best prices & fast delivery nationwide.",
   keywords: [
-    "wallets",
-    "accessories",
-    "peerzada store",
-    "ecommerce",
-    "fashion",
-    "shop online"
+    "customised gifts",
+    "customised gifts karachi",
+    "customized wallets pakistan",
+    "customised wallets pk",
+    "online shopping karachi",
+    "online shopping pakistan",
+    "customized gift items",
+    "leather wallets karachi",
+    "customised keychains pakistan",
+    "peerzada store pk",
+    "best online gifts pakistan",
+    "personalized gifts karachi",
+    "customised name wallets",
+    "cod gifts karachi",
+    "peerzada store"
   ],
   openGraph: {
-    title: "Peerzada Store | Best Wallets & Accessories",
-    description: "Discover the best wallets and accessories. Shop with confidence and style at Peerzada Store.",
+    title: "Peerzada Store | Customised Gifts, Wallets & Online Shopping Karachi, Pakistan (PK)",
+    description: "Discover premium customised gifts, customized leather wallets, keychain combos, and luxury accessories online in Karachi & across Pakistan (PK).",
     url: "https://peerzada.store/",
     siteName: "Peerzada Store",
     images: [
@@ -24,13 +33,13 @@ export const metadata: Metadata = {
         alt: "Peerzada Store Logo"
       }
     ],
-    locale: "en_US",
+    locale: "en_PK",
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Peerzada Store | Best Wallets & Accessories",
-    description: "Discover the best wallets and accessories. Shop with confidence and style at Peerzada Store.",
+    title: "Peerzada Store | Customised Gifts, Wallets & Online Shopping Karachi, Pakistan (PK)",
+    description: "Discover premium customised gifts, customized leather wallets, keychain combos, and luxury accessories online in Karachi & across Pakistan (PK).",
     images: ["/images/logo.png"]
   }
 };

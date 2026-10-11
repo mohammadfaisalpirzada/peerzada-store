@@ -35,26 +35,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const imageUrl = product.imageUrls?.[0] || product.imageUrl || 'https://peerzada.store/images/logo.png';
     
     return {
-      title: `${product.title} | Peerzada Store`,
-      description: `${product.description} - Price: PKR ${product.price}. Shop now at Peerzada Store with fast delivery across Pakistan.`,
+      title: `${product.title} | Customised Online in Karachi & Pakistan | Peerzada Store`,
+      description: `Buy ${product.title} online at Peerzada Store. ${product.description ? product.description.slice(0, 150) : ''}... Price: PKR ${product.price}. Cash on delivery in Karachi & nationwide Pakistan (PK).`,
       keywords: [
         product.title,
+        `customised ${product.title}`,
+        `customized ${product.title}`,
         product.category?.title,
         product.subcategory,
         product.brand,
-        'Pakistan',
-        'online shopping',
+        'customised gifts karachi',
+        'customized gifts pk',
+        'online shopping karachi',
+        'online shopping pakistan',
+        'wallets karachi',
         'peerzada store'
-      ].filter(Boolean),
+      ].filter(Boolean) as string[],
       openGraph: {
-        title: `${product.title} | Peerzada Store`,
-        description: `${product.description} - Price: PKR ${product.price}`,
+        title: `${product.title} | Customised Online Karachi & Pakistan | Peerzada Store`,
+        description: `${product.description} - Price: PKR ${product.price}. Fast delivery across Karachi & Pakistan.`,
         images: [
           {
             url: imageUrl.startsWith('http') ? imageUrl : `https://peerzada.store${imageUrl}`,
             width: 800,
             height: 600,
-            alt: product.title,
+            alt: `${product.title} - Customised Gifts Peerzada Store`,
           }
         ],
         type: 'website',
@@ -62,8 +67,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
       twitter: {
         card: 'summary_large_image',
-        title: `${product.title} | Peerzada Store`,
-        description: `${product.description} - Price: PKR ${product.price}`,
+        title: `${product.title} | Peerzada Store PK`,
+        description: `${product.description} - Price: PKR ${product.price}. Cash on Delivery in Karachi & Pakistan.`,
         images: [imageUrl.startsWith('http') ? imageUrl : `https://peerzada.store${imageUrl}`],
       },
       alternates: {
@@ -220,6 +225,7 @@ export default async function Page({ params }: PageProps) {
             "name": product.title,
             "description": product.description,
             "image": product.imageUrls?.[0] || product.imageUrl,
+            "url": `https://peerzada.store/products/${slug}`,
             "brand": {
               "@type": "Brand",
               "name": product.brand || "Peerzada Store"
@@ -228,10 +234,17 @@ export default async function Page({ params }: PageProps) {
               "@type": "Offer",
               "price": product.price,
               "priceCurrency": "PKR",
+              "priceValidUntil": "2027-12-31",
+              "itemCondition": "https://schema.org/NewCondition",
               "availability": product.inStock !== false ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              "url": `https://peerzada.store/products/${slug}`,
               "seller": {
-                "@type": "Organization",
-                "name": "Peerzada Store"
+                "@type": "OnlineStore",
+                "name": "Peerzada Store",
+                "areaServed": [
+                  { "@type": "City", "name": "Karachi" },
+                  { "@type": "Country", "name": "Pakistan" }
+                ]
               }
             }
           })

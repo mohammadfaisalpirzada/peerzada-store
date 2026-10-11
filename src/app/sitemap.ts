@@ -21,10 +21,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/explore`,
       lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
+      changeFrequency: 'daily' as const,
+      priority: 0.85,
     },
-    // Add additional important pages
     {
       url: `${baseUrl}/wallets`,
       lastModified: currentDate,
@@ -49,20 +48,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     ])
 
-    // Product pages with better SEO signals
-    const productPages = products.map((product: any) => ({
-      url: `${baseUrl}/products/${product.slug}`,
-      lastModified: product._updatedAt ? new Date(product._updatedAt) : currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7, // Increased priority for product pages
-    }))
+    // Product pages with safe slug parsing and higher priority
+    const productPages = products
+      .filter((product: any) => {
+        const slug = typeof product?.slug === 'string' ? product.slug : product?.slug?.current
+        return Boolean(slug)
+      })
+      .map((product: any) => {
+        const slug = typeof product.slug === 'string' ? product.slug : product.slug.current
+        return {
+          url: `${baseUrl}/products/${slug}`,
+          lastModified: product._updatedAt ? new Date(product._updatedAt) : currentDate,
+          changeFrequency: 'daily' as const,
+          priority: 0.85,
+        }
+      })
 
     // Category pages with subcategory support
     const categoryPages = categories.map((category: any) => ({
       url: `${baseUrl}/products?category=${encodeURIComponent(category.value)}`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      priority: 0.7,
     }))
 
     // Add subcategory pages if available
@@ -74,7 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             url: `${baseUrl}/products?category=${encodeURIComponent(category.value)}&subcategory=${encodeURIComponent(subcategory.value)}`,
             lastModified: currentDate,
             changeFrequency: 'weekly' as const,
-            priority: 0.5,
+            priority: 0.6,
           })
         })
       }
@@ -88,7 +95,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   } catch (error) {
     console.error('Error generating dynamic sitemap entries:', error)
-    // Return static pages with error logging
     return staticPages
   }
 }
