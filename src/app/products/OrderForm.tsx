@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import CartToast from '../components/CartToast';
 
-import { getProductImageUrl, getProductPageUrl } from '@/lib/shareUtils';
+import { getProductPageUrl } from '@/lib/shareUtils';
 
 interface OrderFormProduct {
   _id: string;
@@ -60,7 +60,6 @@ export default function OrderForm({ product }: { product: OrderFormProduct }) {
     e.preventDefault();
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://peerzada.store';
     const productUrl = getProductPageUrl(product, origin);
-    const imageUrl = getProductImageUrl(product, origin);
 
     const messageLines = [
       `*Assalam-o-Alaikum!* 🌟`,
